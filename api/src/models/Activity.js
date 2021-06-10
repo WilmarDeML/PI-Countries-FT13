@@ -6,18 +6,17 @@ module.exports = (sequelize) => {
   sequelize.define('activity', {
     nombre: {
       type: DataTypes.TEXT,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     dificultad: {
-        type: DataTypes.INTEGER
-    },
-    duracion: {
         type: DataTypes.INTEGER,
         validate: {
-            min: 1,
-            max: 5
+          min: 1,
+          max: 5
         }
+    },
+    duracion: {
+        type: DataTypes.INTEGER
     },
     temporada: {
         type: DataTypes.ENUM('verano', 'otoño', 'invierno', 'primavera')

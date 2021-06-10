@@ -7,8 +7,7 @@ const router = Router();
 router.get('/', async (req, res) => {
     const {name, page} = req.query;
     let paises = undefined;
-    console.log(name)
-    console.log(page)
+    
     const respuesta = await axios.get('https://restcountries.eu/rest/v2/all');
                 
     await respuesta.data.map(async pais => {
@@ -51,13 +50,11 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:idPais', async (req, res) => {
-    const { idPais } = req.params;
-    const pais = await Country.findByPk(idPais, { include: Activity });
-    res.json( pais );
+    const  { idPais } = req.params
+    
+    const pais = await Country.findByPk(idPais.toUpperCase(), { include: Activity })
+
+    return pais ? res.json( pais ) : res.json({mensaje: `No existe el código ${idPais}`})
 })
 
 module.exports = router;
-
-// GET /countries?name="...":
-// Obtener los países que coincidan con el nombre pasado como query parameter (No necesariamente tiene que ser una matcheo exacto)
-// Si no existe ningún país mostrar un mensaje adecuado
