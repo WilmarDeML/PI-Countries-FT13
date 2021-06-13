@@ -1,6 +1,7 @@
 import {
     OBTENER_PAISES,
-    OBTENER_DETALLE_PAIS
+    OBTENER_DETALLE_PAIS,
+    FILTRAR_POR_CONTINENTE
 } from '../actions/actionTypes'
 
 const estadoInicial = {
@@ -22,6 +23,12 @@ const rootReducer = (estado = estadoInicial, action) => {
                 ...estado, 
                 detallePais: action.payload,
                 cargando: false
+            }
+        case FILTRAR_POR_CONTINENTE:
+            return {
+                ...estado,
+                cargando: false, 
+                paises: action.payload
             }
         case 'CARGANDO':
             return {

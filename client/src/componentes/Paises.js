@@ -1,43 +1,70 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { obtenerPaises } from '../actions'
 
 const Paises = () => {
     const dispatch = useDispatch()
-    const paises = useSelector(state => state.paises)
+    let paises = useSelector(state => state.paises)
     const cargando = useSelector(state => state.cargando)
+    const [input, setInput] = useState({})
+
+    const handleInputChange = e => {
+        setInput({
+            ...input,
+            [e.target.name]: e.target.value
+        })
+    };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        // console.log(input.nombre)
+        dispatch(obtenerPaises(input.nombre, input.continente))
+    }
 
     useEffect(() => {
         dispatch(obtenerPaises())
     }, [dispatch])
     // console.log(paises)
+
     return(
         <section className='cPaises'>
             <h1>Estoy en el componente Paises</h1>
             <div className='cBusquedasFiltros'>
                 <div className='cBuscar'>
                     <span>Buscar Pais </span>            
-                    <input type="text" name='busqueda' placeholder='Nombre del pais...' />
+                    <input 
+                        type="text" 
+                        name='nombre' 
+                        value={input.nombre}
+                        placeholder='Nombre del pais...' 
+                        onChange={handleInputChange}
+                    />
+                    <input type='submit' value='Buscar' onClick={handleSubmit}/>
                 </div>
                 
                 <div className='cOrdenFiltro'>
                     <div className='cFiltrar'>
                         <div className='cFiltroContinente'>
                             <span>Filtrar Por Continente </span>
-                            <select name="select" className='cSelect'>
-                                <option value="africa">Africa</option>
-                                <option value="americas">Americas</option>
-                                <option value="asia">Asia</option>
-                                <option value="europe">Europe</option>
-                                <option value="oceania">Oceania</option>
-                                <option value="polar">Polar</option>
+                            <select name='continente' value={input.continente} onChange={handleInputChange} className='cSelect'>
+                                <option value="Africa">Africa</option>
+                                <option value="Americas">Americas</option>
+                                <option value="Asia">Asia</option>
+                                <option value="Europe">Europe</option>
+                                <option value="Oceania">Oceania</option>
+                                <option value="Polar">Polar</option>
                             </select>
-                            <input type='button' value='Filtrar' className='boton'/>
+                            <input type='submit' value='Filtrar' className='boton' onClick={handleSubmit}/>
                         </div>
                         <div className='cFiltroActividad'>
                             <span>Filtrar Por Actividad Turística </span>
-                            <input type="text" name="filtro" placeholder='Código de actividad...' />
+                            <input 
+                                type="number" 
+                                name="codigo" 
+                                value={input.codigo}
+                                onChange={handleInputChange}
+                                placeholder='Código de actividad...' />
                             <button className='boton'>Filtrar</button>
                         </div>
                     </div>
@@ -59,16 +86,22 @@ const Paises = () => {
             </div>
             <div className='cListaPaises'>
                 <ul>
-                    {cargando ? <h1>Cargando...</h1> :                    
-                        paises && paises.map( pais => 
-                            <li key={pais.id}>
-                                <Link to={`/countries/${pais.id}`}>
-                                    <h1>{pais.nombre}</h1>                            
-                                    <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
-                                </Link>
-                                <h2>{pais.continente}</h2>
-                            </li>                    
-                        )
+                    {
+                        Array.isArray(paises) ?
+                            cargando ? <h1>Cargando...</h1> :                    
+                                !paises[0].mensaje ? paises.map( pais => 
+                                    <li key={pais.id}>
+                                        <Link to={`/countries/${pais.id}`}>
+                                            <h1>{pais.nombre}</h1>                            
+                                            <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
+                                        </Link>
+                                        <h2>{pais.continente}</h2>
+                                    </li>                    
+                                    )
+                            :
+                                <h2>{paises[0].mensaje}</h2>
+                        :
+                        <h1>Cargando...</h1>
                     }              
                 </ul>                
             </div>
