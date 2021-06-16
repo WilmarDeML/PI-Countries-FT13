@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 const router = Router();
 
 router.get('/', async (req, res) => {
-    const {name, page, cont, orden, cod, filtro} = req.query;
+    const {name, page = 1, cont, orden = 'ASC', cod, filtro = 'nombre'} = req.query;
     let paises = undefined;
 
     if(await Country.count() === 0 ) {        
@@ -25,80 +25,54 @@ router.get('/', async (req, res) => {
             });
         });
     }    
-    
-    !name && !page && !cont && !orden && !cod && !filtro? 
-        paises = await Country.findAll({ order: ['nombre'], limit: 10 })
-    :
-    !name && !cont && !page && !cod ?        
+    const total = await Country.count()
+    !name && !cont && !cod ?        
         //llega orden: asce o desc y filtro: población o alfab
-        orden === 'descendente' && filtro === 'poblacion' ?
-            paises = await Country.findAll({ order: [['poblacion', 'DESC']], limit: 10 })
-        :
-        orden === 'descendente' && filtro === 'alfabeto' ?
-            paises = await Country.findAll({ order: [['nombre', 'DESC']], limit: 10})
-        :
-        orden === 'ascendente' && filtro === 'poblacion' ?
-            paises = await Country.findAll({ order: ['poblacion'], limit: 10 })
-        :
-            paises = await Country.findAll({ order: ['nombre'], limit: 10 })        
+        paises = await Country.findAll({ 
+            offset: (parseInt(page)*10 - 10), 
+            order:[[ filtro, orden ]],
+            limit: 10
+        })        
     :
-
-    !name && !page && !cod ?     
-        orden === 'descendente' && filtro === 'poblacion' ?
-            paises = await Country.findAll({ where: {continente: cont}, order: [['poblacion', 'DESC']], limit: 10 })
+    !cod ?  
+        !name && cont ?   
+            paises = await Country.findAll({ 
+                where:{continente: cont},
+                offset: (parseInt(page)*10 - 10), 
+                order: [[ filtro, orden ]],
+                limit: 10
+            })
         :
-        orden === 'descendente' && filtro === 'alfabeto' ?
-            paises = await Country.findAll({ where: {continente: cont}, order: [['nombre', 'DESC']], limit: 10})
+        !cont && name ?
+            paises = await Country.findAll({ 
+                where: { 
+                    nombre: {
+                        [Op.iLike]: `%${name}%`
+                    }                    
+                },
+                offset: (parseInt(page)*10 - 10), 
+                order: [[ filtro, orden ]],
+                limit: 10
+            })
         :
-        orden === 'ascendente' && filtro === 'poblacion' ?
-            paises = await Country.findAll({ where: {continente: cont}, order: ['poblacion'], limit: 10 })
-        :
-            paises = await Country.findAll({ where: {continente: cont}, order: ['nombre'], limit: 10 })
-    :
-    !page && !cod && !cont ?
         paises = await Country.findAll({ 
             where: { 
                 nombre: {
                     [Op.iLike]: `%${name}%`
-                }
-                
+                },
+                continente: cont                    
             },
-            order: ['nombre'],
+            offset: (parseInt(page)*10 - 10), 
+            order: [[ filtro, orden ]],
             limit: 10
         })
+
     :
-    cont ?
-        paises = await Country.findAll({
-            where: {
-                continente: cont
-            },
-            order: ['nombre'],
-            limit: 10
-        })
-    :
-    orden ?
-        orden === 'descendente' ?
-            paises = await Country.findAll({ order: [['nombre', 'DESC']], limit: 10 })
-        :
-        paises = await Country.findAll({ order: ['nombre'], limit: 10 })
-    :
-    filtro ?
-        filtro === 'poblacion' ?
-            paises = await Country.findAll({order:['poblacion'], limit: 10})
-        :
-            paises = await Country.findAll({ order: ['nombre'], limit: 10})
-    :
-    cod ?
-        // paisesId.map(async id => !await actividad.hasCountry(id) && await actividad.addCountry(id))
-        paises = await Country.findAll({
-            include: Activity,
-            limit: 10
-        })
-    :
-    paises = page && await Country.findAll({ offset: (parseInt(page)*10 - 10), limit: 10, order: ['id'], include: Activity })
+    
+    paises = await Country.findAll({ offset: (parseInt(page)*10 - 10), limit: 10, order: [[filtro, orden]], include: Activity })
 
     return paises.length ?
-        res.status(200).json(paises)
+        res.status(200).json([...paises, {pagina: page, total: Math.ceil(total/10)}])
     :
     res.status(404).json([{mensaje: 'Sin coincidencias!'}])
     
@@ -109,7 +83,10 @@ router.get('/:idPais', async (req, res) => {
     
     const pais = await Country.findByPk(idPais.toUpperCase(), { include: Activity })
 
-    return pais ? res.status(200).json( pais ) : res.status(404).json({mensaje: `No existe el código ${idPais}`})
+    return pais ? 
+        res.status(200).json( pais ) 
+    : 
+    res.status(404).json({mensaje: `No existe el código ${idPais}`})
 })
 
 module.exports = router;
