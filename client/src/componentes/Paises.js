@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { obtenerPaises } from '../actions'
+import { obtenerPaises, ordenarPaises } from '../actions'
 
 const Paises = () => {
     const dispatch = useDispatch()
@@ -17,9 +17,17 @@ const Paises = () => {
     };
 
     const handleSubmit = e => {
-        e.preventDefault();
-        // console.log(input.nombre)
-        dispatch(obtenerPaises(input.nombre, input.continente))
+        e.preventDefault();        
+        dispatch(obtenerPaises(input.nombre, input.continente, input.orden, input.filtro))
+        input.nombre = ''
+        input.continente =  ''
+        input.orden = ''
+        input.filtro = ''
+    }
+
+    const handleOnClick = () => {
+        console.log(input.orden)
+        dispatch(obtenerPaises(input.orden, input.codigo))
     }
 
     useEffect(() => {
@@ -48,6 +56,7 @@ const Paises = () => {
                         <div className='cFiltroContinente'>
                             <span>Filtrar Por Continente </span>
                             <select name='continente' value={input.continente} onChange={handleInputChange} className='cSelect'>
+                                <option>Continentes</option>  
                                 <option value="Africa">Africa</option>
                                 <option value="Americas">Americas</option>
                                 <option value="Asia">Asia</option>
@@ -65,18 +74,20 @@ const Paises = () => {
                                 value={input.codigo}
                                 onChange={handleInputChange}
                                 placeholder='Código de actividad...' />
-                            <button className='boton'>Filtrar</button>
+                            <button className='boton' onClick={handleOnClick}>Filtrar</button>
                         </div>
                     </div>
-                    <div className='cOrdenar'>
-                        <span>Ordenar </span>
-                        <input type="radio" name="orden" value="ascendente" />Ascendentemente
-                        <input type="radio" name="orden" value="descendente" />Descendentemente
-                    </div>
-                    <div className='cOrdenarPor'>
-                        <span>Ordenar por </span>
-                        <input type="radio" name="opcion" value="poblacion" />Cantidad de población
-                        <input type="radio" name="opcion" value="alfabeto" />Alfabeto
+                    <div className='cOrden'>
+                        <select name='orden' value={input.orden} onChange={handleInputChange} className='cOrdenar'>
+                            <option>Orden</option>
+                            <option value='ascendente'>Ascendente</option>
+                            <option value='descendente'>Descendente</option>
+                        </select>
+                        <select name='filtro' value={input.filtro} onChange={handleInputChange} className='cOrdenarPor'>
+                            <option>Ordenar Por</option>
+                            <option value='poblacion'>Población</option>
+                            <option value='alfabeto'>Alfabeto</option>
+                        </select>
                     </div>
                     <div className='botones'>
                         <button className='boton'>Atrás</button>
@@ -88,18 +99,17 @@ const Paises = () => {
                 <ul>
                     {
                         Array.isArray(paises) ?
-                            cargando ? <h1>Cargando...</h1> :                    
-                                !paises[0].mensaje ? paises.map( pais => 
-                                    <li key={pais.id}>
-                                        <Link to={`/countries/${pais.id}`}>
-                                            <h1>{pais.nombre}</h1>                            
-                                            <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
-                                        </Link>
-                                        <h2>{pais.continente}</h2>
-                                    </li>                    
-                                    )
-                            :
-                                <h2>{paises[0].mensaje}</h2>
+                            cargando ? <h1>{paises[0].mensaje}</h1> :                    
+                            paises && paises.map( pais => 
+                                <li key={pais.id}>
+                                    <Link to={`/countries/${pais.id}`}>
+                                        <h1>{pais.nombre}</h1>                            
+                                        <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
+                                    </Link>
+                                    <h2>{pais.continente}</h2>
+                                </li>                    
+                            )
+            
                         :
                         <h1>Cargando...</h1>
                     }              
