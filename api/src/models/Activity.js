@@ -21,5 +21,11 @@ module.exports = (sequelize) => {
     temporada: {
         type: DataTypes.ENUM('verano', 'otoño', 'invierno', 'primavera')
     }
-  });
-};
+  })
+}
+// Actividad Turística con las siguientes propiedades:
+// ID
+// Nombre
+// Dificultad (Entre 1 y 5)
+// Duración
+// Temporada (Verano, Otoño, Invierno o Primavera)

@@ -34,5 +34,15 @@ module.exports = (sequelize) => {
     poblacion: {
       type: DataTypes.INTEGER
     }
-  });
-};
+  })
+}
+
+// País con las siguientes propiedades:
+// ID (Código de 3 letras) *
+// Nombre *
+// Imagen de la bandera *
+// Continente *
+// Capital *
+// Subregión
+// Área
+// Población
