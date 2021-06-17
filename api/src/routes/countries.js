@@ -67,14 +67,13 @@ router.get('/', async (req, res) => {
             limit: 10
         })
 
-    :
-    
+    :    
     paises = await Country.findAll({ offset: (parseInt(page)*10 - 10), limit: 10, order: [[filtro, orden]], include: Activity })
 
     return paises.length ?
-        res.status(200).json([...paises, {pagina: page, total: Math.ceil(total/10)}])
+        res.json(paises /*{pagina: page, total: Math.ceil(total/10)}]*/)
     :
-    res.status(404).json([{mensaje: 'Sin coincidencias!'}])
+    res.json([{mensaje: 'Sin coincidencias!'}])
     
 })
 
@@ -82,11 +81,11 @@ router.get('/:idPais', async (req, res) => {
     const  { idPais } = req.params
     
     const pais = await Country.findByPk(idPais.toUpperCase(), { include: Activity })
-
+    console.log(pais)
     return pais ? 
-        res.status(200).json( pais ) 
+        res.json( pais ) 
     : 
-    res.status(404).json({mensaje: `No existe el código ${idPais}`})
+    res.json({mensaje: `No existe el código ${idPais}`})
 })
 
 module.exports = router;
