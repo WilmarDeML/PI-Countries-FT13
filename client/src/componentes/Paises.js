@@ -20,20 +20,21 @@ const Paises = () => {
         e.preventDefault(); 
         input.page > 0 &&       
         dispatch(obtenerPaises(input.nombre, input.continente, input.orden, input.filtro, input.codigo, input.page))
+        input.codigo = ''
     }
 
     useEffect(() => {
         dispatch(obtenerPaises())
     }, [dispatch])
-    // console.log(paises)
 
     return(
         <section className='cPaises'>
             <h1>Estoy en el componente Paises</h1>
+            <h2>{paises && paises.count} resultados</h2>
             <div className='cBusquedasFiltros'>
                 <div className='botones'>
-                    <span>Página </span>
-                    <input type='number' value={input.page} name='page' onClick={ handleSubmit} onChange={handleInputChange} min='1' max='25'></input>
+                    <span>Página {input.page} de {paises && Math.ceil(paises.count/10)} </span>
+                    <input type='number' value={input.page} name='page' onClick={ handleSubmit } onChange={handleInputChange} min='1' max={paises && Math.ceil(paises.count/10)}></input>
                 </div>
                 <div className='cBuscar'>
                     <span>Buscar Pais </span>            
@@ -57,7 +58,7 @@ const Paises = () => {
                 <div className='cFiltroContinente'>
                     <span>Por Continente </span>
                     <select name='continente' value={input.continente} onChange={handleInputChange} className='cSelect'>
-                        <option>Continentes</option>  
+                        <option value={null}>Continentes</option>  
                         <option value="Africa">Africa</option>
                         <option value="Americas">Americas</option>
                         <option value="Asia">Asia</option>
@@ -74,37 +75,50 @@ const Paises = () => {
                         <option value='nombre'>Alfabeto</option>
                     </select>
                 </div>
+                <div className='cFiltroActividad'>
+                    <span>Filtrar Por Actividad Turística </span>
+                    <input 
+                        type="number" 
+                        name="codigo" 
+                        value={input.codigo}
+                        onChange={handleInputChange}
+                        placeholder='Código de actividad...' 
+                    />                    
+                </div>
                 <input type='submit' value='Filtrar' onClick={handleSubmit}/>
                 
             </div>
             <div className='cListaPaises'>
                 <ul>
-                    {/* {console.log(paises.mensaje)} */}
                     {
-                        Array.isArray(paises) ?
-                            
+                        paises && paises.count > 0 ?                            
                             cargando ? <h1>Cargando Paises...</h1> :                    
-                            !paises[0].mensaje ? paises.map( pais => 
-                                <li key={pais.id}>
-                                    {/* {console.log(pais)} */}
+                            paises.rows.map( pais => (
+                                pais.countryId ?
+                                    <li key={pais.id}> 
+                                        <Link to={`/countries/${pais.countryId}`}>
+                                            <h1>{pais.countryId}</h1>                            
+                                        </Link>
+                                    </li>
+                                :
+                                <li key={pais.id}>                                   
                                     <Link to={`/countries/${pais.id}`}>
                                         <h1>{pais.nombre}</h1>                            
                                         <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
                                     </Link>
                                     <h2>{pais.continente}</h2>
-                                </li>                    
-                            ) 
-                            :  
-                            <h1>{paises[0].mensaje}</h1>         
+                                </li>        
+                            ))        
                         :
-                        <h1>Intentando Cargar...</h1>
+                        !paises ? <h1>Intentando Cargar...</h1> : <h1>Sin Coincidencias</h1>
                     }              
                 </ul>                
             </div>
         </section>
     )
-    
 }
+    
+                                                                        
 
 export default Paises
 // Ruta principal: debe contener
@@ -116,20 +130,3 @@ export default Paises
 // [ ] Botones/Opciones para filtrar por continente y por tipo de actividad turística
 // [ ] Botones/Opciones para ordenar tanto ascendentemente como descendentemente los países por orden alfabético y por cantidad de población
 // [ ] Paginado para ir buscando y mostrando los siguientes paises
-
-/* <div className='cOrdenFiltro'>
-                    <div className='cFiltrar'>                        
-                        <div className='cFiltroActividad'>
-                            <span>Filtrar Por Actividad Turística </span>
-                            <input 
-                                type="number" 
-                                name="codigo" 
-                                value={input.codigo}
-                                onChange={handleInputChange}
-                                placeholder='Código de actividad...' />
-                            <button className='boton' onClick={handleOnClick}>Filtrar</button>
-                        </div>
-                    </div>
-                    
-                    
-                </div> */

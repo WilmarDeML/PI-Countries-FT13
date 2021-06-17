@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { detallePais } from '../actions'
@@ -7,7 +7,6 @@ import { detallePais } from '../actions'
 const Detalle = ({match, history}) => {
     
     const id = match.params.id
-    // console.log(id)
     const dispatch = useDispatch()
     const pais = useSelector(state => state.detallePais)
     const cargando = useSelector(state => state.cargando)
@@ -25,18 +24,26 @@ const Detalle = ({match, history}) => {
             
                 {pais ?
                     <>
-                    <h1>{pais.data.id}</h1> 
-                    <h1>{pais.data.nombre}</h1>                            
-                    <img src={`${pais.data.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
-                    <h2>{pais.data.capital}</h2>      
-                    <h2>Subregion: {pais.data.subregion}</h2>
-                    <h2>Área: {pais.data.area}m^2</h2>
-                    <h2>Población: {pais.data.poblacion} habitantes</h2>
+                    <h1>{pais.id}</h1> 
+                    <h1>{pais.nombre}</h1>                            
+                    <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
+                    <h2>{pais.capital}</h2>      
+                    <h2>Subregion: {pais.subregion}</h2>
+                    <h2>Área: {pais.area}m^2</h2>
+                    <h2>Población: {pais.poblacion} habitantes</h2>
                     <h2>Actividades:</h2>
                     <ul>
                         {
-                            pais.data.actividades?.length ? 
-                                pais.data.actividades.map(actividad => <li key={pais.data.id}>{actividad.nombre}</li>)
+                            pais.activities?.length ? 
+                                pais.activities.map(actividad => 
+                                <li key={actividad.id}>
+                                    <select aria-readonly>
+                                        <option>Actividad {actividad.id} {actividad.nombre}</option>
+                                        <option>Dificultad: Nivel {actividad.dificultad}</option>
+                                        <option>Duración: {actividad.duracion} días</option>
+                                        <option>Temporada: {actividad.temporada}</option>
+                                    </select>                      
+                                </li>)
                             :
                                 <h2>No tiene actividades asociadas!</h2>
                         }
