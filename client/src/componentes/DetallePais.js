@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { detallePais } from '../actions'
 
-const Detalle = ({match}) => {
+const Detalle = ({match, history}) => {
     
     const id = match.params.id
     // console.log(id)
@@ -19,9 +19,9 @@ const Detalle = ({match}) => {
         <section className='Home'>
             {cargando ? <h1>Cargando...</h1> :
                 <>
-                <Link to='/countries'>
-                    <span>Volver</span>
-                </Link>
+                <button onClick={history.goBack}>
+                    Volver
+                </button>
             
                 {pais ?
                     <>

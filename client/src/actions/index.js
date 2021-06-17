@@ -1,34 +1,62 @@
 import axios from 'axios'
 
-import { OBTENER_PAISES, OBTENER_DETALLE_PAIS, FILTRAR_POR_CONTINENTE, ORDENAR_PAISES } from './actionTypes'
+import { OBTENER_PAISES, OBTENER_DETALLE_PAIS } from './actionTypes'
 
-export const obtenerPaises = (pais, continente, orden, filtro) => (
-    !pais && !continente && !orden && !filtro? 
+export const obtenerPaises = (pais, continente, orden = 'ASC', filtro = 'nombre', codigo, pagina = 1) => (
+    !pais && !continente && !codigo ?
         async dispatch => {
+            console.log(pagina)
             await dispatch({type: 'CARGANDO'})
-            const paises = await axios.get('http://localhost:3001/countries')
+            const paises = await axios.get(`http://localhost:3001/countries?orden=${orden}&filtro=${filtro}&page=${pagina}`)
             await dispatch({
                 type: OBTENER_PAISES,
                 payload: paises.data
             })
         }
     :
-    // pais ? 
-    async dispatch => {
-        await dispatch({type: 'CARGANDO'})
-        const paises = await axios.get(`http://localhost:3001/countries?name=${pais}&cont=${continente}&orden=${orden}&filtro=${filtro}`)
-        !paises.mensaje ?
+    !codigo ? 
+        !pais && continente ?
+            async dispatch => {
+                console.log(pagina)
+                await dispatch({type: 'CARGANDO'})
+                const paises = await axios.get(`http://localhost:3001/countries?cont=${continente}&orden=${orden}&filtro=${filtro}&page=${pagina}`)
+                await dispatch({
+                    type: OBTENER_PAISES,
+                    payload: paises.data
+                })
+            }
+        :
+        pais && !continente ?
+            async dispatch => {
+                console.log(pagina)
+                await dispatch({type: 'CARGANDO'})
+                const paises = await axios.get(`http://localhost:3001/countries?name=${pais}&orden=${orden}&filtro=${filtro}&page=${pagina}`)
+                // console.log(paises.data)
+                await dispatch({
+                    type: OBTENER_PAISES,
+                    payload: paises.data
+                })
+            }
+        :
+        async dispatch => {
+            console.log(pagina)
+            await dispatch({type: 'CARGANDO'})
+            const paises = await axios.get(`http://localhost:3001/countries?name=${pais}&cont=${continente}&orden=${orden}&filtro=${filtro}&page=${pagina}`)
             await dispatch({
                 type: OBTENER_PAISES,
                 payload: paises.data
             })
-        :
-            await dispatch({
-                type: OBTENER_PAISES,
-                payload: paises.mensaje
-            })
+        }
+    :
+    async dispatch => {
+        console.log(pagina)
+        await dispatch({type: 'CARGANDO'})
+        const paises = await axios.get(`http://localhost:3001/countries?cod=${codigo}&orden=${orden}&filtro=${filtro}&page=${pagina}`)
+        await dispatch({
+            type: OBTENER_PAISES,
+            payload: paises.mensaje
+        })            
     }
-    
 )
 // export const ordenarPaises = (orden, codigo) => (
 //     !codigo ?
