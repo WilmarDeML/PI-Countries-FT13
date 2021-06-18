@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { OBTENER_PAISES, OBTENER_DETALLE_PAIS } from './actionTypes'
+import { OBTENER_PAISES, OBTENER_DETALLE_PAIS, CREAR_ACTIVIDAD } from './actionTypes'
 
 export const obtenerPaises = (pais, continente, orden = 'ASC', filtro = 'nombre', codigo, pagina = 1) => (
     !pais && (!continente || (continente === 'cont')) && !codigo ?
@@ -61,6 +61,17 @@ export const detallePais = idPais => (
         await dispatch({
             type: OBTENER_DETALLE_PAIS,
             payload: detallePais.data
+        })
+    }
+)
+
+export const postearActividad = datosActividad => (
+    async dispatch => {        
+        await dispatch({type: 'CARGANDO'})        
+        const actividad = await axios.post('http://localhost:3001/activity', datosActividad)
+        await dispatch({
+            type: CREAR_ACTIVIDAD,
+            payload: actividad.data
         })
     }
 )

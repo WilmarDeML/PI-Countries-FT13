@@ -5,7 +5,7 @@ import { obtenerPaises } from '../actions'
 
 const Paises = () => {
     const dispatch = useDispatch()
-    let paises = useSelector(state => state.paises)
+    const paises = useSelector(state => state.paises)
     const cargando = useSelector(state => state.cargando)
     const [input, setInput] = useState({page:1})
     
@@ -17,8 +17,7 @@ const Paises = () => {
     };
 
     const handleSubmit = e => {
-        e.preventDefault(); 
-        input.page > 0 &&       
+        e.preventDefault();        
         dispatch(obtenerPaises(input.nombre, input.continente, input.orden, input.filtro, input.codigo, input.page))
         input.codigo = ''
     }
@@ -30,6 +29,9 @@ const Paises = () => {
     return(
         <section className='cPaises'>
             <h1>Estoy en el componente Paises</h1>
+            <Link to='/actividad'>
+                <h1>Crear Actividad</h1>
+            </Link>
             <h2>{paises && paises.count} resultados</h2>
             <div className='cBusquedasFiltros'>
                 <div className='botones'>

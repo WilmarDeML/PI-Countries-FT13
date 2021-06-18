@@ -1,12 +1,14 @@
 import {
     OBTENER_PAISES,
-    OBTENER_DETALLE_PAIS
+    OBTENER_DETALLE_PAIS,
+    CREAR_ACTIVIDAD
 } from '../actions/actionTypes'
 
 const estadoInicial = {
     paises: undefined,
     detallePais: undefined,
-    cargando: false
+    cargando: false,
+    actividad: undefined
 }
 
 const rootReducer = (estado = estadoInicial, action) => {
@@ -22,6 +24,12 @@ const rootReducer = (estado = estadoInicial, action) => {
                 ...estado, 
                 detallePais: action.payload,
                 cargando: false
+            }
+        case CREAR_ACTIVIDAD:
+            return {
+                ...estado,
+                cargando: false,
+                actividad: action.payload
             }
         case 'CARGANDO':
             return {
