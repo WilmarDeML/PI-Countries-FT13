@@ -1,8 +1,8 @@
-const { Router } = require('express');
-const axios = require('axios').default;
-const { Country, Activity, actividad_pais } = require('../db');
-const { Op } = require("sequelize");
-const router = Router();
+const { Router } = require('express')
+const axios = require('axios').default
+const { Country, Activity, actividad_pais } = require('../db')
+const { Op } = require("sequelize")
+const router = Router()
 
 router.get('/', async (req, res) => {
     const {name, page = 1, cont, orden = 'ASC', cod, filtro = 'nombre', idPais} = req.query;
@@ -65,7 +65,6 @@ router.get('/', async (req, res) => {
             order: [[ filtro, orden ]],
             limit: 10
         })
-
     :    
     paises = await actividad_pais.findAndCountAll({ where: {activityId: cod}, offset: (parseInt(page)*10 - 10), limit: 10, order: [['countryId', orden]]})
 

@@ -1,10 +1,25 @@
 const { Router } = require('express');
 const { Activity, Country, actividad_pais } = require('../db');
 const router = Router();
+const axios = require('axios').default
 
 router.post('/', async (req, res) => {
   if(await Country.count() === 0) {
-    return res.json({mensaje: 'No hay paises para asignarle la actividad!'})
+    const respuesta = await axios.get('https://restcountries.eu/rest/v2/all');        
+        await respuesta.data.map(async pais => {
+            await Country.findOrCreate({
+                where: {
+                    id: pais.alpha3Code,
+                    nombre: pais.name,
+                    bandera: pais.flag,
+                    continente: pais.region,
+                    capital: pais.capital,
+                    subregion: pais.subregion,
+                    area: pais.area,
+                    poblacion: pais.population
+                }            
+            });
+        });
   } else {
     const { nombre, dificultad, duracion, temporada, paisesId } = req.body
     try {
@@ -21,7 +36,7 @@ router.post('/', async (req, res) => {
         res.json({mensaje: `La actividad con id ${actividad.id} ha sido asignada al país que no la tenía`})
       }
     } catch (error) {
-      return res.status(404).json(error)
+      return res.json({mensaje: error})
     }
   }  
 });
