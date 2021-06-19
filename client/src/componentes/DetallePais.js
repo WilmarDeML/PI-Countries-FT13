@@ -37,7 +37,7 @@ const Detalle = ({match, history}) => {
                             pais.activities?.length ? 
                                 pais.activities.map(actividad => 
                                 <li key={actividad.id}>
-                                    <select aria-readonly>
+                                    <select>
                                         <option>Actividad {actividad.id} {actividad.nombre}</option>
                                         <option>Dificultad: Nivel {actividad.dificultad}</option>
                                         <option>Duración: {actividad.duracion} días</option>
