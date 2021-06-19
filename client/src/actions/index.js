@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { OBTENER_PAISES, OBTENER_DETALLE_PAIS, CREAR_ACTIVIDAD } from './actionTypes'
+import { OBTENER_PAISES, OBTENER_DETALLE_PAIS, CREAR_ACTIVIDAD, OBTENER_TODOS } from './actionTypes'
 
 export const obtenerPaises = (pais, continente, orden = 'ASC', filtro = 'nombre', codigo, pagina = 1) => (
     !pais && (!continente || (continente === 'cont')) && !codigo ?
@@ -51,6 +51,17 @@ export const obtenerPaises = (pais, continente, orden = 'ASC', filtro = 'nombre'
             payload: paises.data
         }) 
 
+    }
+)
+
+export const obtenerTodos = () => (
+    async dispatch => {
+        await dispatch({type: 'CARGANDO'})
+        const paises = await axios.get(`http://localhost:3001/countries/todo`)
+        await dispatch({
+            type: OBTENER_TODOS,
+            payload: paises.data
+        })
     }
 )
 
