@@ -81,6 +81,7 @@ const Paises = () => {
                     <span>Filtrar Por Actividad Turística </span>
                     <input 
                         type="number" 
+                        min='1'
                         name="codigo" 
                         value={input.codigo}
                         onChange={handleInputChange}
