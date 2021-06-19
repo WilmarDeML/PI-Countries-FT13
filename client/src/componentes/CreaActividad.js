@@ -1,39 +1,52 @@
 import React, { useState } from 'react'
 // import { Link } from 'react-router-dom'
-// import { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { postearActividad } from '../actions'
+import { postearActividad, obtenerTodos } from '../actions'
 
 const Actividad = () => {    
+	
 	const dispatch = useDispatch()
-	const paises = useSelector(state => state.paises)
+	const paises = useSelector(state => state.todos)
+	// console.log(paises)
 	const cargando = useSelector(state => state.cargando)
 	const actividad = useSelector(state => state.actividad)
     const [input, setInput] = useState({
-        nombre: undefined,
+        nombre: '',
         dificultad: 1,
         duracion: 1,
 		temporada: 'verano',
-		paisesId: ['COL', 'VEN', 'MEX', 'AFG']
-    });
+		paisesId: []
+    })
 
-    const [errors, setErrors] = useState({});
+    const [error, setError] = useState({})
+	// console.log(input)
+	useEffect(() => {		
+        dispatch(obtenerTodos())
+    }, [dispatch])
 
     const handleSubmit = e => {
-		e.preventDefault();
+		e.preventDefault()
 		dispatch(postearActividad({...input}))
+		input.paisesId = []
+		input.nombre = ''
 	}
-    
-    const handleInputChange = e => {
-        setInput({
-            ...input,
-            [e.target.name]: e.target.value
-        });
-        // setErrors(validate({
-		// 	...input,
-		// 	[e.target.name]: e.target.value
-		// }))
-    };
+
+	const handleOnClick = () => {
+		setInput({...input, paisesId:[...input.paisesId, input.id]})
+	}
+
+    const handleInputChange = e => {		
+		setInput({
+			...input,
+			[e.target.name]: e.target.value
+		})      
+		
+        setError(validate({
+			...input,
+			[e.target.name]: e.target.value
+		}))
+    }
 
     return(
         <form onSubmit={handleSubmit} className='formulario'>
@@ -45,8 +58,9 @@ const Actividad = () => {
 				placeholder='Actividad...'
 				value={input.nombre}		    			
 				onChange={handleInputChange}
-				className={errors.nombre && 'danger'}
+				// className={errors.nombre && 'danger'}
 			/>
+			{error.nombre && (<p>{error.nombre}</p>)}
             <label>Duración </label>
             <input 
 				type="number" 
@@ -55,7 +69,7 @@ const Actividad = () => {
 				placeholder='Número de días...'
 				value={input.duracion}		    			
 				onChange={handleInputChange}
-				className={errors.duracion && 'danger'}
+				// className={errors.duracion && 'danger'}
 			/>
             <div className='cDificultad'>
                 <span>Dificultad: </span>
@@ -72,8 +86,36 @@ const Actividad = () => {
                 <input type="radio" name="temporada" value="invierno" onChange={handleInputChange}/>Invierno
                 <input type="radio" name="temporada" value="primavera" onChange={handleInputChange}/>Primavera
             </div>
+			<div className='cPaises'>
+				<select name='id' value={input.id} onChange={handleInputChange}>
+					<option>                                   
+						Paises                            
+					</option>
+					{
+						paises &&                   
+							paises.map( pais => (								
+								<option key={pais.id} value={pais.id}>                                   
+									{pais.nombre}                            
+								</option>								        
+							))
+					}
+				</select>  
+				<button type='button' onClick={handleOnClick}>Añadir Pais</button>  
+				<div>
+					<ul>
+						{
+							!input.paisesId?.length ? <h2>No hay paises Asignados</h2> :
+							<>
+							<h2>Se agregará la actividad {input.nombre} a:</h2>
+							{
+								input.paisesId.map(paisId => <li>{paisId}</li>)
+							}
+							</>
+						}
+					</ul>
+				</div>
+			</div>
 			<input type='submit' value='Crear Actividad'  />
-
 			{
 				cargando ? <h1>Cargando...</h1> : <h1>{actividad && actividad.mensaje}</h1>
 			}			
@@ -82,6 +124,14 @@ const Actividad = () => {
 }
 
 export default Actividad
+
+export function validate(input){
+	let error = {}
+	if(!input.nombre){
+		error.nombre = 'Nombre de actividad requerido'
+	}
+	return error
+}
 
 // Ruta de creación de actividad turística: debe contener
 
@@ -92,19 +142,3 @@ export default Actividad
 // Temporada
 //  Posibilidad de seleccionar/agregar varios países en simultaneo
 //  Botón/Opción para crear una nueva actividad turística
-// export function validate(input){
-// 	let errors = {};
-// 	if(!input.nombre){
-// 		errors.nombre = 'Nombre is required';
-// 	}else if (!/\S+@\S+\.\S+/.test(input.nombre)) {
-// 		errors.nombre = 'Nombre is invalid';
-// 	}
-
-// 	if(!input.password){
-// 		errors.password = 'Password is required';
-// 	}else if (!/(?=.*[0-9])/.test(input.password)) {
-// 		errors.password = 'Password is invalid';
-// 	}
-
-// 	return errors;
-// }
