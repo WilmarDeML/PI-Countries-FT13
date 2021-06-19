@@ -70,7 +70,30 @@ router.get('/', async (req, res) => {
 
     res.json(paises)
 })
-
+router.get('/todo', async (req, res) => {
+    let paises = undefined
+    if(await Country.count() === 0 ) {        
+        const respuesta = await axios.get('https://restcountries.eu/rest/v2/all');        
+        await respuesta.data.map(async pais => {
+            await Country.findOrCreate({
+                where: {
+                    id: pais.alpha3Code,
+                    nombre: pais.name,
+                    bandera: pais.flag,
+                    continente: pais.region,
+                    capital: pais.capital,
+                    subregion: pais.subregion,
+                    area: pais.area,
+                    poblacion: pais.population
+                }            
+            });
+        });
+    }    
+    paises = await Country.findAll({  
+        order:[[ 'nombre', 'ASC' ]]
+    }) 
+    res.json(paises)
+})
 router.get('/:idPais', async (req, res) => {
     const  { idPais } = req.params
     
