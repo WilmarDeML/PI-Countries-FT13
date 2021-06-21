@@ -2,8 +2,8 @@ import { Route as Ruta } from 'react-router'
 import './App.css'
 import Home from './componentes/Home'
 import Paises from './componentes/Paises'
-import DetallePais from './componentes/DetallePais'
-import CreaActividad from './componentes/CreaActividad'
+import DetallePais from './componentes/detallePais/DetallePais'
+import CreaActividad from './componentes/actividadCultural/CreaActividad'
 
 const App = () => (  
   <div className="App">

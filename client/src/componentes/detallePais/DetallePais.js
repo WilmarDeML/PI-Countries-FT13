@@ -2,7 +2,8 @@ import React from 'react'
 // import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { detallePais } from '../actions'
+import { detallePais } from '../../actions'
+import './DetallePais.css'
 
 const Detalle = ({match, history}) => {
     
@@ -15,7 +16,7 @@ const Detalle = ({match, history}) => {
     }, [id, dispatch])
     
     return(
-        <section className='Home'>
+        <>
             {cargando ? <h1>Cargando...</h1> :
                 <>
                 <button onClick={history.goBack}>
@@ -23,7 +24,7 @@ const Detalle = ({match, history}) => {
                 </button>
             
                 {pais ?
-                    <>
+                    <section className='seccionPais'>
                     <h1>{pais.id}</h1> 
                     <h1>{pais.nombre}</h1>                            
                     <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
@@ -32,28 +33,30 @@ const Detalle = ({match, history}) => {
                     <h2>Área: {pais.area}m^2</h2>
                     <h2>Población: {pais.poblacion} habitantes</h2>
                     <h2>Actividades:</h2>
-                    <ul>
-                        {
-                            pais.activities?.length ? 
-                                pais.activities.map(actividad => 
-                                <li key={actividad.id}>
-                                    <select>
-                                        <option>Actividad {actividad.id} {actividad.nombre}</option>
-                                        <option>Dificultad: Nivel {actividad.dificultad}</option>
-                                        <option>Duración: {actividad.duracion} días</option>
-                                        <option>Temporada: {actividad.temporada}</option>
-                                    </select>                      
-                                </li>)
-                            :
-                                <h2>No tiene actividades asociadas!</h2>
-                        }
-                    </ul>
-                    </>                    
+                    {
+                         pais.activities?.length ? 
+                            <ul>
+                                {
+                                    pais.activities.map(actividad => 
+                                    <li key={actividad.id}>
+                                        <div>
+                                            <h4>Actividad {actividad.id}: {actividad.nombre} </h4>
+                                            <h4>Dificultad: Nivel {actividad.dificultad} </h4>
+                                            <h4>Duración: {actividad.duracion} meses </h4>
+                                            <h4>Temporada: {actividad.temporada}</h4>
+                                        </div>                      
+                                    </li>)
+                                }
+                            </ul>
+                        :
+                            <h2>No tiene actividades asociadas!</h2>
+                    }
+                    </section>                    
                 :
                     <h1>No se halló el pais {id}</h1>}
                 </>
             }
-        </section>
+        </>
     )
 }
 

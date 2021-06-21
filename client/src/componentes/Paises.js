@@ -50,8 +50,8 @@ const Paises = () => {
                 </div>                
                 <div>
                     <span>Orden </span>
-                    <select name='orden' value={input.orden} onChange={handleInputChange} className='cOrdenar'>
-                        <option>Orden</option>
+                    <select name='orden' value={input.orden} onChange={handleInputChange} className='cOrdenar' defaultValue='DEFAULT'>
+                        <option value='DEFAULT'>Orden</option>
                         <option value='ASC'>Ascendente</option>
                         <option value='DESC'>Descendente</option>
                     </select>
@@ -59,8 +59,8 @@ const Paises = () => {
                 <h2>Filtros</h2>
                 <div className='cFiltroContinente'>
                     <span>Por Continente </span>
-                    <select name='continente' value={input.continente} onChange={handleInputChange} className='cSelect'>
-                        <option value={null}>Continentes</option>  
+                    <select name='continente' value={input.continente} onChange={handleInputChange} className='cSelect' defaultValue='DEFAULT'>
+                        <option value='DEFAULT' disabled>Continentes</option>  
                         <option value="Africa">Africa</option>
                         <option value="Americas">Americas</option>
                         <option value="Asia">Asia</option>
