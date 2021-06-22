@@ -56,7 +56,7 @@ const Actividad = () => {
       		
 			<section className='seccionNombreDuracion'>
 				<div className='inputNombre'>
-					<label>Nombre de la Actividad </label> 	
+					<label className='labels'>Nombre de la Actividad </label> 	
 					<input 
 						type="text" 
 						name='nombre'
@@ -68,7 +68,7 @@ const Actividad = () => {
 					{error.nombre && (<span className='error'> <em>{error.nombre}</em></span>)}
 				</div>
 				<div className='inputDuracion'>
-					<label>Duración en meses </label>
+					<label className='labels'>Duración en meses </label>
 					<input 
 						type="number" 
 						name='duracion'
@@ -83,7 +83,7 @@ const Actividad = () => {
 			</section>
         	<section className='seccionDificultadTemporada'>
 				<div className='cTemporada'>
-					<label>Temporada </label>
+					<label className='labels'>Temporada </label>
 					<div>
 					<input type="radio" name="temporada" value='verano'  onChange={handleInputChange}/>Verano
 					<input type="radio" name="temporada" value="otoño" onChange={handleInputChange}/>Otoño
@@ -92,7 +92,7 @@ const Actividad = () => {
 					</div>
 				</div>
 				<div className='cDificultad'>
-					<label>Dificultad</label>
+					<label className='labels'>Dificultad</label>
 					<div>
 					<input type="radio" name="dificultad" value='1'  onChange={handleInputChange}/>1 
 					<input type="radio" name="dificultad" value="2" onChange={handleInputChange}/>2 
@@ -103,7 +103,7 @@ const Actividad = () => {
 				</div>
 			</section>
             <section className='seccionPaises'>
-				<span>Selecciona los paises a asignarle la actividad </span>
+				<span className='labels'>Selecciona los paises a asignarle la actividad </span>
 				<select name='id' value={input.id} onChange={handleInputChange} defaultValue='DEFAULT' className='selectClass inputClass'>
 					<option value='DEFAULT' disabled>                                   
 						Paises...                         
@@ -119,7 +119,7 @@ const Actividad = () => {
 				</select>  
 				<button type='button' onClick={handleOnClick} className='boton'>Añadir Pais</button>  
 				<div>
-					{input.paisesId?.length && <h2>Se agregará la actividad {input.nombre} a:</h2>}	
+					{input.paisesId?.length && <h2>Se agregará la actividad {input.nombre ? input.nombre : error.nombre} a:</h2>}	
 					<ul>							
 						{
 							!input.paisesId?.length ? <h2>No hay paises Asignados</h2> 

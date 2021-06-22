@@ -19,18 +19,18 @@ const Detalle = ({match, history}) => {
         <>
             {cargando ? <h1>Cargando...</h1> :
                 <>
-                <button onClick={history.goBack}>
-                    Volver
+                <button onClick={history.goBack} className='boton1'>
+                    Volver Atrás
                 </button>
             
                 {pais ?
                     <section className='seccionPais'>
+                    <h1 className='nombrePais'>{pais.nombre}</h1>                            
                     <h1>{pais.id}</h1> 
-                    <h1>{pais.nombre}</h1>                            
                     <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
                     <h2>{pais.capital}</h2>      
                     <h2>Subregion: {pais.subregion}</h2>
-                    <h2>Área: {pais.area}m^2</h2>
+                    <h2>Área: {pais.area} m<sup>2</sup></h2>
                     <h2>Población: {pais.poblacion} habitantes</h2>
                     <h2>Actividades:</h2>
                     {
@@ -39,11 +39,12 @@ const Detalle = ({match, history}) => {
                                 {
                                     pais.activities.map(actividad => 
                                     <li key={actividad.id}>
-                                        <div>
-                                            <h4>Actividad {actividad.id}: {actividad.nombre} </h4>
-                                            <h4>Dificultad: Nivel {actividad.dificultad} </h4>
-                                            <h4>Duración: {actividad.duracion} meses </h4>
-                                            <h4>Temporada: {actividad.temporada}</h4>
+                                        <div className='divActividad'>
+                                            <h3>Actividad {actividad.id}</h3>
+                                            <h4>{actividad.nombre}</h4>
+                                            <h4>Dificultad {actividad.dificultad} </h4>
+                                            <h4>Dura {actividad.duracion} meses </h4>
+                                            <h4>En {actividad.temporada}</h4>
                                         </div>                      
                                     </li>)
                                 }

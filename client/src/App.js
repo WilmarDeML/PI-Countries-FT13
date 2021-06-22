@@ -1,6 +1,6 @@
 import { Route as Ruta } from 'react-router'
 import './App.css'
-import Home from './componentes/Home'
+import Home from './componentes/home/Home'
 import Paises from './componentes/Paises'
 import DetallePais from './componentes/detallePais/DetallePais'
 import CreaActividad from './componentes/actividadCultural/CreaActividad'

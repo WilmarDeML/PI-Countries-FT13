@@ -1,11 +1,13 @@
 .formulario {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: gray;
-    background-color: rgba(198, 188, 188, .9);
-    margin: 10% 25% 10% 25%;
+    color: black;
+    background-color: darkgrey;
+    opacity: 0.8;
+    margin: 5% 25% 5% 25%;
     padding: 2em;
     border-radius: 5em;
     font-weight: 500;
@@ -25,6 +27,7 @@
 }
 ul {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 li {
@@ -38,24 +41,29 @@ li {
     margin: .5em;
 }
 .danger {
-    border: purple solid .2em;
+    border: yellow solid .2em;
     border-radius: .5em;
     padding: .5em;
     margin: .5em;
 }
 .error {
-    color: purple;
+    color: yellow;
 }
 .boton {
     background-color: #aaa;
-    border: .1em solid #aaa;
+    border: .1em solid black;
     color: purple;
     padding: .5em;
     border-radius: .5em;
     margin: .5em;
+    font-size: medium;
+    font-weight: 600;
 }
 .boton:hover {
     border-color: purple;
+}
+.labels {
+    color: purple;
 }
 .inputClass {
     padding: .5em;
