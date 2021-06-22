@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { obtenerPaises } from '../actions'
+import { obtenerPaises } from '../../actions'
+import './Paises.css'
 
 const Paises = () => {
     const dispatch = useDispatch()
@@ -27,39 +28,47 @@ const Paises = () => {
     }, [dispatch])
 
     return(
-        <section className='cPaises'>
-            <h1>Estoy en el componente Paises</h1>
-            <Link to='/actividad'>
-                <h1>Crear Actividad</h1>
-            </Link>
-            <h2>{paises && paises.count} resultados</h2>
-            <div className='cBusquedasFiltros'>
-                <div className='botones'>
-                    <span>Página {input.page} de {paises && Math.ceil(paises.count/10)} </span>
-                    <input type='number' value={input.page} name='page' onClick={ handleSubmit } onChange={handleInputChange} min='1' max={paises && Math.ceil(paises.count/10)}></input>
-                </div>
-                <div className='cBuscar'>
-                    <span>Buscar Pais </span>            
-                    <input 
-                        type="text" 
-                        name='nombre' 
-                        value={input.nombre}
-                        placeholder='Nombre del pais...' 
-                        onChange={handleInputChange}
-                    />
-                </div>                
+        <section className='seccionPaises'>
+            <div className='cEncabezado'>
+                <h1><em>Encuentra información de los paises en el mundo</em></h1>
+                <Link to='/actividad' className='botones'>
+                    <h1>Crear Actividad Cultural</h1>
+                </Link>
+            </div>
+            <div className='cBuscar'>
+                <span>Buscar Pais por palabra clave 💨</span>            
+                <input 
+                    type="text" 
+                    name='nombre' 
+                    value={input.nombre}
+                    placeholder='Palabra clave...' 
+                    onChange={handleInputChange}
+                    className='inputClass'
+                />
+            </div>                
+            <div className='cOrdenamientos'>
                 <div>
-                    <span>Orden </span>
-                    <select name='orden' value={input.orden} onChange={handleInputChange} className='cOrdenar' defaultValue='DEFAULT'>
-                        <option value='DEFAULT'>Orden</option>
+                    <span>Orden 'ASC' 'DESC' 💨</span>
+                    <select name='orden' value={input.orden} onChange={handleInputChange} className='inputClass' defaultValue='DEFAULT'>
+                        <option value='DEFAULT' disabled>Orden</option>
                         <option value='ASC'>Ascendente</option>
                         <option value='DESC'>Descendente</option>
                     </select>
                 </div>
-                <h2>Filtros</h2>
-                <div className='cFiltroContinente'>
-                    <span>Por Continente </span>
-                    <select name='continente' value={input.continente} onChange={handleInputChange} className='cSelect' defaultValue='DEFAULT'>
+                <div className='cOrden'> 
+                <span>Ordenar por 💨</span>                       
+                    <select name='filtro' value={input.filtro} onChange={handleInputChange} className='inputClass' defaultValue='DEFAULT'>
+                        <option value='DEFAULT' disabled>Ordenar Por</option>
+                        <option value='poblacion'>Población</option>
+                        <option value='nombre'>Alfabeto</option>
+                    </select>
+                </div>
+            </div>
+            <h2>Filtros</h2>
+            <div className='cFiltros'>
+                <div className='dFiltros'>
+                    <span>Por Continente 💨</span>
+                    <select name='continente' value={input.continente} onChange={handleInputChange} className='inputClass' defaultValue='DEFAULT'>
                         <option value='DEFAULT' disabled>Continentes</option>  
                         <option value="Africa">Africa</option>
                         <option value="Americas">Americas</option>
@@ -69,16 +78,8 @@ const Paises = () => {
                         <option value="Polar">Polar</option>
                     </select>
                 </div>
-                <div className='cOrden'> 
-                <span>Por </span>                       
-                    <select name='filtro' value={input.filtro} onChange={handleInputChange} className='cOrdenarPor'>
-                        <option>Ordenar Por</option>
-                        <option value='poblacion'>Población</option>
-                        <option value='nombre'>Alfabeto</option>
-                    </select>
-                </div>
-                <div className='cFiltroActividad'>
-                    <span>Filtrar Por Actividad Turística </span>
+                <div className='dFiltros'>
+                    <span>Filtrar Por Actividad Turística 💨</span>
                     <input 
                         type="number" 
                         min='1'
@@ -86,10 +87,26 @@ const Paises = () => {
                         value={input.codigo}
                         onChange={handleInputChange}
                         placeholder='Código de actividad...' 
+                        className='inputClass'
                     />                    
                 </div>
-                <input type='submit' value='Filtrar' onClick={handleSubmit}/>
-                
+            </div>
+            <input type='submit' value='Buscar' onClick={handleSubmit} className='botones botonBuscar' />                
+            <div className='cPaginado'>
+                <h2 className='botones otroBoton'>{paises && paises.count} resultados</h2>
+
+                <div className='botones otroBoton'>
+                    <span>Página {input.page < 1 ? 1 : input.page} de {paises && Math.ceil(paises.count/10)} </span>
+                    <input type='number' 
+                        value={input.page} 
+                        name='page' 
+                        onClick={ handleSubmit } 
+                        onChange={handleInputChange} 
+                        min='1' 
+                        max={paises && Math.ceil(paises.count/10)} 
+                        className='inputClass'
+                    />
+                </div>
             </div>
             <div className='cListaPaises'>
                 <ul>
@@ -99,15 +116,15 @@ const Paises = () => {
                             paises.rows.map( pais => (
                                 pais.countryId ?
                                     <li key={pais.id}> 
-                                        <Link to={`/countries/${pais.countryId}`}>
+                                        <Link to={`/countries/${pais.countryId}`} className='link'>
                                             <h1>{pais.countryId}</h1>                            
                                         </Link>
                                     </li>
                                 :
                                 <li key={pais.id}>                                   
-                                    <Link to={`/countries/${pais.id}`}>
+                                    <Link to={`/countries/${pais.id}`} className='link'>
                                         <h1>{pais.nombre}</h1>                            
-                                        <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
+                                        <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '8em', width: '13em'}} />
                                     </Link>
                                     <h2>{pais.continente}</h2>
                                 </li>        

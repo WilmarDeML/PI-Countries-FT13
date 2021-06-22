@@ -7,10 +7,11 @@
     color: black;
     background-color: darkgrey;
     opacity: 0.8;
-    margin: 5% 25% 5% 25%;
+    margin: 5% 20% 5% 20%;
     padding: 2em;
     border-radius: 5em;
     font-weight: 500;
+    font-size: large;
 }
 .seccionNombreDuracion {
     display: flex;

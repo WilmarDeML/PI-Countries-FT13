@@ -1,7 +1,7 @@
 import { Route as Ruta } from 'react-router'
 import './App.css'
 import Home from './componentes/home/Home'
-import Paises from './componentes/Paises'
+import Paises from './componentes/paises/Paises'
 import DetallePais from './componentes/detallePais/DetallePais'
 import CreaActividad from './componentes/actividadCultural/CreaActividad'
 

@@ -27,7 +27,7 @@ const Detalle = ({match, history}) => {
                     <section className='seccionPais'>
                     <h1 className='nombrePais'>{pais.nombre}</h1>                            
                     <h1>{pais.id}</h1> 
-                    <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '15em'}} />
+                    <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '10em', width: '18em'}} />
                     <h2>{pais.capital}</h2>      
                     <h2>Subregion: {pais.subregion}</h2>
                     <h2>Área: {pais.area} m<sup>2</sup></h2>

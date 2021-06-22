@@ -27,7 +27,7 @@ const Home = () => {
         </section>
         <section >
             <Link to='/countries' className='seccionEnlace'>
-                <h1>Página principal para la información de los paises del mundo!</h1>
+                <h1>Página principal para la información de los paises en el mundo!</h1>
             </Link>        
         </section>
         <section className='seccionBanderasBottom'>
