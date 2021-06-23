@@ -27,7 +27,7 @@ const Paises = () => {
         dispatch(obtenerPaises())
     }, [dispatch])
 
-    return(
+    return (
         <section className='seccionPaises'>
             <div className='cEncabezado'>
                 <h1><em>Encuentra información de los paises en el mundo</em></h1>
@@ -49,27 +49,25 @@ const Paises = () => {
             <div className='cOrdenamientos'>
                 <div>
                     <span>Orden 'ASC' 'DESC' 💨</span>
-                    <select name='orden' value={input.orden} onChange={handleInputChange} className='inputClass' defaultValue='DEFAULT'>
-                        <option value='DEFAULT' disabled>Orden</option>
+                    <select name='orden' defaultValue={input.orden} onChange={handleInputChange} className='inputClass' >
                         <option value='ASC'>Ascendente</option>
                         <option value='DESC'>Descendente</option>
                     </select>
                 </div>
                 <div className='cOrden'> 
                 <span>Ordenar por 💨</span>                       
-                    <select name='filtro' value={input.filtro} onChange={handleInputChange} className='inputClass' defaultValue='DEFAULT'>
-                        <option value='DEFAULT' disabled>Ordenar Por</option>
-                        <option value='poblacion'>Población</option>
+                    <select name='filtro' defaultValue={input.filtro} onChange={handleInputChange} className='inputClass' >
                         <option value='nombre'>Alfabeto</option>
+                        <option value='poblacion'>Población</option>
                     </select>
                 </div>
             </div>
-            <h2>Filtros</h2>
+            <h2 className='tFiltros'><em>Filtros</em></h2>
             <div className='cFiltros'>
                 <div className='dFiltros'>
                     <span>Por Continente 💨</span>
-                    <select name='continente' value={input.continente} onChange={handleInputChange} className='inputClass' defaultValue='DEFAULT'>
-                        <option value='DEFAULT' disabled>Continentes</option>  
+                    <select name='continente' defaultValue={input.continente} onChange={handleInputChange} className='inputClass' >
+                        <option value=''>Todos</option>  
                         <option value="Africa">Africa</option>
                         <option value="Americas">Americas</option>
                         <option value="Asia">Asia</option>
@@ -79,7 +77,7 @@ const Paises = () => {
                     </select>
                 </div>
                 <div className='dFiltros'>
-                    <span>Filtrar Por Actividad Turística 💨</span>
+                    <span>Por Actividad Turística 💨</span>
                     <input 
                         type="number" 
                         min='1'
@@ -109,19 +107,19 @@ const Paises = () => {
                 </div>
             </div>
             <div className='cListaPaises'>
-                <ul>
+                <ul className='miUl'>
                     {
                         paises && paises.count > 0 ?                            
                             cargando ? <h1>Cargando Paises...</h1> :                    
                             paises.rows.map( pais => (
                                 pais.countryId ?
-                                    <li key={pais.id}> 
+                                    <li key={pais.id} className='liPais'> 
                                         <Link to={`/countries/${pais.countryId}`} className='link'>
                                             <h1>{pais.countryId}</h1>                            
                                         </Link>
                                     </li>
                                 :
-                                <li key={pais.id}>                                   
+                                <li key={pais.id} className='liPais'>                                   
                                     <Link to={`/countries/${pais.id}`} className='link'>
                                         <h1>{pais.nombre}</h1>                            
                                         <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '8em', width: '13em'}} />

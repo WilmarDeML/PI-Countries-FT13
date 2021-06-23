@@ -16,17 +16,21 @@
     width: 8em;
     font-weight: 600;
     font-size: large;
-    position: absolute;
+    /* position: absolute; */
     opacity: .9;
+    position: fixed;
 }
 .boton1:hover {
     border-color: purple;
     color: black;
 }
-
 .nombrePais {
     font-size: xx-large;
     color: purple;
+}
+h2 + h2 {
+    border-top: .1px solid purple;
+    padding-top: .5em;
 }
 .divActividad {
     margin: .1em;
