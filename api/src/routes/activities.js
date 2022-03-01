@@ -7,7 +7,7 @@ router.post('/', async (req, res) => {
 
   if(await Country.count() === 0) {
 
-    const respuesta = await axios.get('https://restcountries.eu/rest/v2/all')       
+    const respuesta = await axios.get('https://restcountries.com/v3.1/all')       
     await respuesta.data.map(async pais => {
         await Country.findOrCreate({
             where: {

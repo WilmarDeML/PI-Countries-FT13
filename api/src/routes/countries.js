@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     let paises = undefined;
 
     if(await Country.count() === 0 ) {        
-        const respuesta = await axios.get('https://restcountries.eu/rest/v2/all');        
+        const respuesta = await axios.get('https://restcountries.com/v3.1/all');        
         await respuesta.data.map(async pais => {
             await Country.findOrCreate({
                 where: {
@@ -73,16 +73,18 @@ router.get('/', async (req, res) => {
 router.get('/todo', async (req, res) => {
     let paises = undefined
     if(await Country.count() === 0 ) {        
-        const respuesta = await axios.get('https://restcountries.eu/rest/v2/all');        
+        // const respuesta = await axios.get('https://restcountries.eu/rest/v2/all');  
+        const respuesta = await axios.get('https://restcountries.com/v3.1/all');  
+        // console.log(respuesta.data[0])     
         await respuesta.data.map(async pais => {
             await Country.findOrCreate({
                 where: {
-                    id: pais.alpha3Code,
-                    nombre: pais.name,
-                    bandera: pais.flag,
+                    id: pais.cca3,
+                    nombre: pais.name.common,
+                    bandera: pais.flags.svg,
                     continente: pais.region,
-                    capital: pais.capital,
-                    subregion: pais.subregion,
+                    capital: pais.capital?.length ? pais.capital[0] : 'Sin capital',
+                    subregion: pais.subregion ?? 'Sin subregion',
                     area: pais.area,
                     poblacion: pais.population
                 }            

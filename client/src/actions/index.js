@@ -71,10 +71,10 @@ export const obtenerTodos = () => (
 export const detallePais = idPais => (
     async dispatch =>{
         await dispatch({type: 'CARGANDO'})
-        const detallePais = await axios.get(`http://localhost:3001/countries/${idPais}`)
+        const detalle = await axios.get(`http://localhost:3001/countries/${idPais}`)
         await dispatch({
             type: OBTENER_DETALLE_PAIS,
-            payload: detallePais.data
+            payload: detalle.data
         })
     }
 )
