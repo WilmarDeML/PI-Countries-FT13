@@ -1,18 +1,21 @@
-.seccionBanderasTop {
+.contenedor {
+    overflow: hidden;
+}
+.seccionBanderas {
     display: flex;
     flex-wrap: wrap;
-    position: absolute;
+    max-height: 100vh;
 }
 .seccionEnlace {
     text-decoration: none;
     padding: .3em 1em;
     position: absolute;
-    margin-top: 20% ;
-    margin-left: -40%;
-    margin-right: 10%;
+    top: 30%;
+    right: 20%;
+    left: 20%;
     background-color: black;
     border-radius: .5em;
-    opacity: .8;
+    opacity: .9;
     color: purple;
     border: .1em solid purple;
     font-family: monospace;
@@ -23,12 +26,11 @@
     background-color: purple;
     color: black;
 }
-.seccionBanderasBottom {
-    display: flex;
-    flex-wrap: wrap;
-    position: absolute;
-    margin-top: 50%;
-}
 .imgBandera {
     opacity: .2;
+    margin: .5em .6em;
+}
+img {
+    height: 2.8em;
+    width: 3.8em
 }
