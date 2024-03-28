@@ -17,12 +17,12 @@
 //     =====`-.____`.___ \_____/___.-`___.-'=====
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const server = require('./src/app.js');
-const { conn } = require('./src/db.js');
-
+import server from './src/app.js';
+import conn from './src/db.js';
+import { SERVER_PORT } from './src/config.js';
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
-  server.listen(3001, () => {
-    console.log('%s listening at 3001'); // eslint-disable-line no-console
+conn.sync(/*{ force: true }*/).then(() => { // force: true obliga a borrar las tablas si existen y crearlas de nuevo
+  const servidor = server.listen(SERVER_PORT ?? 3001, () => {
+    console.log(`Escuchando en el puerto: ${servidor.address().port}`); // eslint-disable-line no-console
   });
 });
