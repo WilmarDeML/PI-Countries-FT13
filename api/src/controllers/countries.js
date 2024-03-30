@@ -1,41 +1,31 @@
 import connection from '../db.js'
 import { Op } from "sequelize"
+import { LIMIT } from '../config.js';
 
 const { country: Country, activity: Activity, actividad_pais: ActivityCountry } = connection.models
 
 export const obtenerPorPagina = async (req, res) => {
 
-    const { name, cod: activityId, cont: continente, filtro = 'nombre', orden = 'ASC', page = 1 } = req.query;
+    const { name, activityId, continente, filtro = 'nombre', orden = 'ASC', page = 1, limit = LIMIT } = req.query;
 
-    const limit = 10;
     const offset = +page * limit - limit;
-    const order = activityId ? [['countryId', orden]] : [[filtro, orden]];
-    const where = activityId
-        ? { activityId }
-        : !name && continente
-            ? { continente }
-            : !continente && name
-                ? { nombre: { [Op.iLike]: `%${name}%` } }
-                : continente && name
-                    ? { nombre: { [Op.iLike]: `%${name}%` }, continente }
-                    : {};
+    const order = [[ filtro, orden ]]; // orden puede ser ASC o DESC
 
-    const query = { offset, limit, order, where };
+    const query = { offset, limit, order, where: {}, include: [] };
+
+    if (activityId) query.include.push({ model: Activity, where: { id: activityId }})
+    if (name) query.where.nombre = { [Op.iLike]: `%${name}%` }
+    if (continente) query.where.continente = continente
+
     try {
-        let countries
-        if (!activityId) {
-            countries = await Country.findAndCountAll(query)
-        } else {
-            const countryActivities = await ActivityCountry.findAndCountAll(query);
-            const data = countryActivities.rows.map(async (ca) => await Country.findByPk(ca.countryId.toUpperCase(), { include: Activity }));
-            countries = await Promise.all(data);
-        }
+        const countries = await Country.findAndCountAll(query)
 
-        return countries.length
-            ? res.json(countries)
-            : res.status(404).json({ mensaje: 'No se encontraron resultados con los parámetros brindados' })
+        return countries.rows.length
+            ? res.json({...countries, totalPages: Math.ceil(countries.count/limit)})
+            : res.status(404).json({ message: 'No se encontraron resultados con los parámetros brindados' })
     } catch (error) {
-        return res.json({ msg: error.message });
+        console.error('Error al obtener paises por página: ', error)
+        return res.json({ msg: `Error al obtener paises por página: ${error.message}` });
     }
 };
 
