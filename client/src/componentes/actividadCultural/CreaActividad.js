@@ -8,8 +8,7 @@ import './CreaActividad.css'
 const Actividad = () => {    
 	
 	const dispatch = useDispatch()
-	const paises = useSelector(state => state.todos)
-	// console.log(paises)
+	const paises = useSelector(state => state.paises)
 	const cargando = useSelector(state => state.cargando)
 	const actividad = useSelector(state => state.actividad)
     const [input, setInput] = useState({
@@ -20,10 +19,10 @@ const Actividad = () => {
 		paisesId: []
     })
 	const [error, setError] = useState({})
-	// console.log(input)
+	
 	useEffect(() => {		
         dispatch(obtenerTodos())
-    }, [dispatch])
+    }, [dispatch, input])
 
     const handleSubmit = e => {
 		e.preventDefault()
@@ -32,12 +31,14 @@ const Actividad = () => {
 		input.nombre = ''
 	}
 
-	const handleOnClick = () => {
-		!input.paisesId.includes(input.id) && input.id !== undefined &&
-		setInput({...input, paisesId:[...input.paisesId, input.id]})
+	const handleOnClick = e => {
+		if(!input.paisesId.includes(e.target.value)) {
+			setInput({...input, paisesId:[...input.paisesId, e.target.value]})			
+		}
 	}
 
-    const handleInputChange = e => {		
+    const handleInputChange = e => {	
+		console.log(input.id, e.target.name, e.target.value)	
 		setInput({
 			...input,
 			[e.target.name]: e.target.value
@@ -49,14 +50,20 @@ const Actividad = () => {
 		}))
     }
 
+	const handleRemovePais = paisId => {
+		setInput({...input, paisesId: input.paisesId.filter(id => id !== paisId)})
+	}
+
     return(
 		<>
+		<Link to={`/countries`}>
+			Regresar a la lista de paises...
+		</Link>
         <form onSubmit={handleSubmit} className='formulario'>
-		<h1 className= 'text-gray'><em>Crea Actividades Culturales en el mundo</em></h1>
-      		
+			<h1 className= 'text-gray'><em>Crea Actividades Culturales en el mundo</em></h1>      		
 			<section className='seccionNombreDuracion'>
 				<div className='inputNombre'>
-					<label className='labels'>Nombre de la Actividad </label> 	
+					<label className='labels'> Nombre de la Actividad </label> 	
 					<input 
 						type="text" 
 						name='nombre'
@@ -65,7 +72,7 @@ const Actividad = () => {
 						onChange={handleInputChange}
 						className={error.nombre ? 'danger' : 'inputClass'}
 					/>
-					{error.nombre && (<span className='error'> <em>{error.nombre}</em></span>)}
+					{ error.nombre && (<span className='error'> <em>{error.nombre}</em></span>)}
 				</div>
 				<div className='inputDuracion'>
 					<label className='labels'>Duración en meses </label>
@@ -78,10 +85,10 @@ const Actividad = () => {
 						onChange={handleInputChange}
 						className={error.duracion ? 'danger' : 'inputClass'}
 					/>
-					{error.duracion && (<span className='error'><em> {error.duracion} </em></span>)}
+					{ error.duracion && (<span className='error'><em> {error.duracion} </em></span>) }
 				</div>
 			</section>
-        	<section className='seccionDificultadTemporada'>
+			<section className='seccionDificultadTemporada'>
 				<div className='cTemporada'>
 					<label className='labels'>Temporada </label>
 					<div>
@@ -104,35 +111,28 @@ const Actividad = () => {
 			</section>
             <section className='seccionPaises'>
 				<span className='labels'>Selecciona los paises a asignarle la actividad </span>
-				<select name='id' value={input.id} onChange={handleInputChange} defaultValue='DEFAULT' className='selectClass inputClass'>
+				<select name='id' onChange={handleOnClick} defaultValue='DEFAULT' className='selectClass inputClass'>
 					<option value='DEFAULT' disabled>                                   
-						Paises...                         
+						Seleccionar paises...                         
 					</option>
 					{
-						paises &&                   
-							paises.map( pais => (								
-								<option key={pais.id} value={pais.id}>                                   
-									{pais.nombre}                            
-								</option>								        
-							))
+						paises?.length ? paises.map( pais => (								
+							<option key={pais.id} value={pais.id}> {pais.nombre} </option>								        
+						))
+						: <option>Obteniendo paises...</option>
 					}
 				</select>  
-				<button type='button' onClick={handleOnClick} className='boton'>Añadir Pais</button>  
 				<div>
-					{input.paisesId?.length && <h2>Se agregará la actividad {input.nombre ? input.nombre : error.nombre} a:</h2>}	
 					<ul>							
 						{
-							!input.paisesId?.length ? <h2>No hay paises Asignados</h2> 
-							:			
-							input.paisesId.map(paisId => 
-								<li>
-									<Link to={`/countries/${paisId}`}>
+							!input.paisesId?.length 
+								? <h2>No hay paises Asignados</h2> 
+								: input.paisesId.map(paisId => 
+									<li key={paisId} onClick={() => handleRemovePais(paisId)} title='Click para retirar de la lista'>									
 										{
 											<img src={`${paises?.find(pais => pais.id === paisId)?.bandera}`} alt="No tiene bandera" style={{height: '2em', width: '3em'}} />											
 										}
-									</Link>
-								</li>)	
-											
+									</li>)											
 						}
 					</ul>
 				</div>
@@ -140,11 +140,11 @@ const Actividad = () => {
             <section className='seccionSubmit'>
 				<input type='submit' value='Crear Actividad' className='boton'  />
 				{
-					cargando ? <h1>Cargando...</h1> : <h1>{actividad && actividad.mensaje}</h1>
+					cargando ? <h1>Cargando...</h1> : <h1 className='text-danger'>{ actividad && actividad.mensaje }</h1>
 				}
 			</section>			
-      </form>
-	  </>
+		</form>
+		</>
     )
 }
 

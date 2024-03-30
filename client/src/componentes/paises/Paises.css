@@ -1,74 +1,63 @@
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .seccionPaises {
     font-family: 'Titillium Web', sans-serif;
     font-size: medium;
     font-weight: 600;
-    margin: 3% 6%;
-    opacity: .8;
+    margin: 2rem 5rem;
+    opacity: .9;
     border-radius: 1em;
     background-color: #aaa;
-    padding: 2em;
+    padding: 0 2em;
 }
-.cEncabezado {
-    display: flex;
-    width: 100%;
-    justify-content: space-around;
-    margin: 1%;
-}
+
 .botones {
     text-decoration: none;
     padding: .3em 1em;
-    position: relative;
-    background-color: black;
+    background-color: rgb(232, 20, 232);
     border-radius: .5em;
     opacity: .8;
-    color: purple;
-    border: .1em solid purple;
+    color: rgb(18, 18, 17);
+    border: .1em solid rgb(232, 20, 232);
     font-family: monospace;
-    font-size: xx-small;
+    font-size: x-large;
     align-self: center;
+    font-weight: bold;
 }
-.botones:hover{
-    border-color: black;
-    background-color: purple;
-    color: black;
+
+.botones:hover {
+    border-color: rgb(213, 240, 104);
+    background-color: rgb(232, 20, 232);
+    color: rgb(213, 240, 104);
 }
+
 .botonBuscar {
     font-size: xx-large;
     cursor: pointer;
     font-style: oblique;
     font-weight: 600;
 }
+
 .otroBoton {
     font-size: large;
-    border-color: black;
-    background-color: purple;
-    color: black;
+    border-color: rgb(213, 240, 104);
+    background-color: rgb(232, 20, 232);
+    color: rgb(213, 240, 104);
+    text-align: center;
 }
-.cBuscar {
-    display: flex;
-    width: 80%;
-    align-items: center;
-    margin-bottom: 1em;
-    justify-content: center;
-}
-.cOrdenamientos {
-    display: flex;
-    width: 80%;
-    justify-content: space-around;
-}
+
 .tFiltros {
     letter-spacing: 1em;
 }
-.cFiltros {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-content: center;
-    width: 100%;
-}
+
 .dFiltros {
     margin-bottom: .7em;
 }
+
 .cPaginado {
     display: flex;
     align-items: center;
@@ -76,20 +65,103 @@
     justify-content: space-around;
     margin-top: 2em;
 }
+
 .miUl {
     width: 100%;
     justify-content: space-evenly;
 }
+
 .liPais {
-    border: .1em solid purple;
+    border: .2em solid white;
     border-radius: .8em;
-    padding: 0 .5em;
-    margin: .1em;
+    padding: 0;
+    margin: .5em;
+    color: black;
 }
-.liPais:hover{
-    border-color: black;
+
+.liPais:hover {
+    border: .2em solid rgb(232, 20, 232);
+    border-radius: .8em;
 }
+
 .link {
-    text-decoration:wavy;
+    text-decoration: wavy;
+    color: black;
+}
+
+.filtros {
+    display: flex;
+    width: 100%;
+    padding: 1em 0;
+    margin-top: .5rem;
+    border-radius: .5rem;
+    align-items: center;
+    justify-content: space-around;
+}
+
+legend {
+    font-size: 1rem;
+}
+
+.inputSearch {
+    padding: .5em;
+    border-radius: .5em;
+    margin: .5em;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     color: purple;
+    border: .1em solid #aaa;
+
+    &:hover {
+        border-color: purple;
+    }
+}
+
+.cOrdenamientos {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    fieldset {
+        display: flex;
+        flex-direction: column;
+        min-width: 150px;
+        justify-content: center;
+        align-items: center;
+
+        .switchGroup {
+            display: flex;
+            flex-direction: column;
+
+            label {
+                align-self: self-start;
+            }
+        }
+    }
+
+}
+
+.btn-pagination {
+    background: transparent !important;
+    border: none;
+    &:hover {
+        color: rgb(232, 20, 232);
+    }
+}
+
+.openIt {
+    animation: fadeIn 500ms forwards;
+}
+
+.closeIt {
+    animation: fadeOut 500ms forwards;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; display: none; }
 }

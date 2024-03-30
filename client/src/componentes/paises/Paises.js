@@ -3,70 +3,102 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { obtenerPaises } from '../../actions'
 import './Paises.css'
+import PaisCard from '../pais-card/pais-card'
+import Header from '../header/Header'
+import Paginado from '../paginado/Paginado'
 
 const Paises = () => {
     const dispatch = useDispatch()
     const paises = useSelector(state => state.paises)
     const cargando = useSelector(state => state.cargando)
-    const [input, setInput] = useState({page:1})
+    const [params, setInput] = useState({ page: 1 })
+    const [showFilters, setShowFilters] = useState(true)
+
+    const handleShowFilters = () => {
+        setShowFilters(!showFilters)
+    }
     
     const handleInputChange = e => {
+        params.page = 1
         setInput({
-            ...input,
+            ...params,
             [e.target.name]: e.target.value
         })
     };
+    
+    useEffect(() => {
+        dispatch(obtenerPaises(params))
+    }, [dispatch, params])
+    
+    const handleInputPage = (number, limit) => {
 
-    const handleSubmit = e => {
-        e.preventDefault();        
-        dispatch(obtenerPaises(input.nombre, input.continente, input.orden, input.filtro, input.codigo, input.page))
-        input.codigo = ''
+        if (limit) {
+            number = number < 0 ? 1 : number > limit ? limit : number
+        }
+
+        if (number) {            
+            setInput({
+                ...params,
+                page: number
+            })
+        }
     }
 
-    useEffect(() => {
-        dispatch(obtenerPaises())
-    }, [dispatch])
-
     return (
+        <>
         <section className='seccionPaises'>
-            <div className='cEncabezado'>
-                <h1><em>Encuentra información de los paises en el mundo</em></h1>
-                <Link to='/actividad' className='botones'>
-                    <h1>Crear Actividad Cultural</h1>
+            <div className='d-flex justify-content-between w-100'>
+                <Link to='/actividad' className='botones mx-2'>
+                    Crear Actividad Cultural
                 </Link>
+                <Header></Header>
+                <button onClick={handleShowFilters} className= 'botones mx-2'>{ showFilters ? 'Ocultar filtros' : 'Mostrar filtros' }</button>
             </div>
-            <div className='cBuscar'>
-                <span>Buscar Pais por palabra clave 💨</span>            
-                <input 
-                    type="text" 
-                    name='nombre' 
-                    value={input.nombre}
-                    placeholder='Palabra clave...' 
-                    onChange={handleInputChange}
-                    className='inputClass'
-                />
-            </div>                
-            <div className='cOrdenamientos'>
-                <div>
-                    <span>Orden 'ASC' 'DESC' 💨</span>
-                    <select name='orden' defaultValue={input.orden} onChange={handleInputChange} className='inputClass' >
-                        <option value='ASC'>Ascendente</option>
-                        <option value='DESC'>Descendente</option>
-                    </select>
+            <aside className={`${showFilters ? 'openIt' : 'closeIt'} filtros`}>
+                <div className='w-100 d-flex flex-column'>
+                    <legend>Buscar por palabra clave 💥</legend>
+                    <input 
+                        type="text" 
+                        name='name' 
+                        value={params.name ?? ''}
+                        placeholder='Buscar por palabra clave...' 
+                        onChange={handleInputChange}
+                        className='inputSearch mt-0'
+                    />
+                </div>              
+                                
+                <div className='cOrdenamientos'>
+                    <fieldset>
+                        <legend className='mb-1'>Orden 💥</legend>
+                        <div className='switchGroup'>
+                            <div className="form-check form-switch">
+                                <input name='orden' value='ASC' onChange={handleInputChange} className="form-check-input" type="radio" id="flexAsc" />
+                                <label className="form-check-label" htmlFor="flexAsc">ASC</label>
+                            </div>
+                            <div className="form-check form-switch">
+                                <input name='orden' value='DESC' onChange={handleInputChange} className="form-check-input" type="radio" id="flexDesc" />
+                                <label className="form-check-label" htmlFor="flexDesc">DESC</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend className='mb-1'>Ordenar por 💥</legend>
+                        <div className='switchGroup'>
+                            <div className="form-check form-switch">
+                                <input name='filtro' value='nombre' onChange={handleInputChange} className="form-check-input" type='radio' id="flexAlfabeto" />
+                                <label className="form-check-label" htmlFor="flexAlfabeto">Alfabeto</label>
+                            </div>
+                            <div className="form-check form-switch">
+                                <input name='filtro' value='poblacion' onChange={handleInputChange} className="form-check-input" type="radio" id="flexPoblacion" />
+                                <label className="form-check-label" htmlFor="flexPoblacion">Población</label>
+                            </div>
+                        </div>
+                    </fieldset>
                 </div>
-                <div className='cOrden'> 
-                <span>Ordenar por 💨</span>                       
-                    <select name='filtro' defaultValue={input.filtro} onChange={handleInputChange} className='inputClass' >
-                        <option value='nombre'>Alfabeto</option>
-                        <option value='poblacion'>Población</option>
-                    </select>
-                </div>
-            </div>
-            <h2 className='tFiltros'><em>Filtros</em></h2>
-            <div className='cFiltros'>
-                <div className='dFiltros'>
-                    <span>Por Continente 💨</span>
-                    <select name='continente' defaultValue={input.continente} onChange={handleInputChange} className='inputClass' >
+                <div className='ps-3 w-100 d-flex flex-column'>
+                    <legend>Por Continente 💥</legend>
+                    <select name='continente' value={params.continente ?? ''} onChange={handleInputChange} className='inputSearch mt-0' >
                         <option value=''>Todos</option>  
                         <option value="Africa">Africa</option>
                         <option value="Americas">Americas</option>
@@ -76,63 +108,64 @@ const Paises = () => {
                         <option value="Polar">Polar</option>
                     </select>
                 </div>
-                <div className='dFiltros'>
-                    <span>Por Actividad Turística 💨</span>
+                <div className='ps-3 w-100 d-flex flex-column'>
+                    <legend>Por Actividad Turística 💥</legend>
                     <input 
                         type="number" 
                         min='1'
-                        name="codigo" 
-                        value={input.codigo}
+                        name="activityId" 
+                        value={params.activityId ?? ''}
                         onChange={handleInputChange}
                         placeholder='Código de actividad...' 
-                        className='inputClass'
+                        className='inputSearch mt-0'
                     />                    
                 </div>
-            </div>
-            <input type='submit' value='Buscar' onClick={handleSubmit} className='botones botonBuscar' />                
-            <div className='cPaginado'>
-                <h2 className='botones otroBoton'>{paises && paises.count} resultados</h2>
+            </aside>
+            
+            <aside> 
+                { paises?.count > 0 && 
+                    <Paginado 
+                        totalResults={paises.count} 
+                        totalPages={paises.totalPages} 
+                        currentPage={params.page} 
+                        changePage={handleInputPage}
+                    />            
+                }
 
-                <div className='botones otroBoton'>
-                    <span>Página {input.page < 1 ? 1 : input.page} de {paises && Math.ceil(paises.count/10)} </span>
-                    <input type='number' 
-                        value={input.page} 
-                        name='page' 
-                        onClick={ handleSubmit } 
-                        onChange={handleInputChange} 
-                        min='1' 
-                        max={paises && Math.ceil(paises.count/10)} 
-                        className='inputClass'
-                    />
-                </div>
-            </div>
-            <div className='cListaPaises'>
-                <ul className='miUl'>
+                <ul className='d-flex justify-content-between align-items-center'>
                     {
-                        paises && paises.count > 0 ?                            
-                            cargando ? <h1>Cargando Paises...</h1> :                    
+                        paises?.count > 0 ?                            
+                            cargando ? <h1 >Cargando Paises...</h1> :                    
                             paises.rows.map( pais => (
-                                pais.countryId ?
-                                    <li key={pais.id} className='liPais'> 
-                                        <Link to={`/countries/${pais.countryId}`} className='link'>
-                                            <h1>{pais.countryId}</h1>                            
-                                        </Link>
-                                    </li>
-                                :
-                                <li key={pais.id} className='liPais'>                                   
-                                    <Link to={`/countries/${pais.id}`} className='link'>
-                                        <h1>{pais.nombre}</h1>                            
-                                        <img src={`${pais.bandera}`} alt="No tiene bandera" style={{height: '8em', width: '13em'}} />
-                                    </Link>
-                                    <h2>{pais.continente}</h2>
-                                </li>        
+                                pais.countryId 
+                                    ?
+                                        <li key={pais.countryId} className='liPais'> 
+                                            <Link to={`/countries/${pais.countryId}`} className='link'>
+                                                <h1>{pais.countryId}</h1>                            
+                                            </Link>
+                                        </li>
+                                    :
+                                        <li key={pais.id} className='card-deck liPais openIt'>
+                                            <PaisCard 
+                                                id={pais.id} 
+                                                nombre={pais.nombre} 
+                                                bandera={pais.bandera} 
+                                                continente={pais.continente}
+                                                poblacion={pais.poblacion} 
+                                            />
+                                        </li>        
                             ))        
                         :
-                        !paises ? <h1>Intentando Cargar...</h1> : <h1>Sin Coincidencias</h1>
+                            <h1 className='alert alert-warning mt-5 w-100 openIt'> 
+                                { !paises ? 'Intentando Cargar...' : 'Sin Coincidencias' }
+                            </h1>
                     }              
                 </ul>                
-            </div>
+            </aside>
+            <aside>
+            </aside>
         </section>
+        </>
     )
 }
     

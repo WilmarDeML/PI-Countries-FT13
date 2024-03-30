@@ -1,0 +1,19 @@
+.card {
+    min-width: 15rem;
+}
+.bg-tertiary {
+    background-color: rgb(200, 200, 200);
+}
+
+.link {
+    color: rgb(232, 20, 232);
+}
+
+.nav-link {
+    border-radius: 1em !important;
+
+    &:hover {
+        background-color: rgb(232, 20, 232) !important;
+        color: rgb(213, 240, 104) !important;
+    }
+}

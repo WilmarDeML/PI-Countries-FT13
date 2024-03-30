@@ -5,7 +5,7 @@ import { obtenerTodos } from '../../actions'
 import './Home.css'
 
 const Home = () => {
-    const paises = useSelector(state => state.todos)
+    const paises = useSelector(state => state.paises)
     const dispatch = useDispatch()
 
     useEffect(() => {		
@@ -17,7 +17,7 @@ const Home = () => {
             <section className='seccionBanderas'>
                 {
                     paises &&                   
-                        paises.map( (pais, indice) => (								
+                        paises.map( (pais, indice) => (		
                             indice <= paises.length && <figure key={pais.id} value={pais.id} className='imgBandera' >                                   
                                 <img src={pais.bandera} alt='ups...' />                            
                             </figure>								        
@@ -26,7 +26,7 @@ const Home = () => {
             </section>
             <section >
                 <Link to='/countries' className='seccionEnlace'>
-                    <h1>Página principal para la información de los paises en el mundo!</h1>
+                    <h1>!Hola, Siguiendo este enlace podrás encontrar información detallada de los paises en el mundo!</h1>
                 </Link>        
             </section>
         </div>

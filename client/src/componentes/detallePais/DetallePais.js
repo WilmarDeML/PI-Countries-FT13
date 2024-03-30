@@ -1,13 +1,14 @@
 import React from 'react'
-// import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { detallePais } from '../../actions'
 import './DetallePais.css'
 
-const Detalle = ({match, history}) => {
-    
-    const id = match.params.id
+const Detalle = () => {
+    const navigate = useNavigate()
+    const params = useParams()
+    const id = params.id
     const dispatch = useDispatch()
     const pais = useSelector(state => state.detallePais)
     const cargando = useSelector(state => state.cargando)
@@ -19,7 +20,7 @@ const Detalle = ({match, history}) => {
         <>
             {cargando ? <h1>Cargando...</h1> :
                 <>
-                <button onClick={history.goBack} className='boton1'>
+                <button onClick={() => navigate(-1)} className='boton1'>
                     Volver Atrás
                 </button>
             
@@ -34,7 +35,7 @@ const Detalle = ({match, history}) => {
                     <h2>Población: {pais.poblacion} habitantes</h2>
                     <h2>Actividades:</h2>
                     {
-                         pais.activities?.length ? 
+                        pais.activities?.length ? 
                             <ul>
                                 {
                                     pais.activities.map(actividad => 
