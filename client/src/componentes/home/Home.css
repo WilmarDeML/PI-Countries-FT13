@@ -1,36 +1,41 @@
 .contenedor {
     overflow: hidden;
 }
+
 .seccionBanderas {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
+    justify-content: space-evenly;
     max-height: 100vh;
 }
+
 .seccionEnlace {
     text-decoration: none;
-    padding: .3em 1em;
+    padding: 1rem;
     position: absolute;
     top: 30%;
     right: 20%;
     left: 20%;
-    background-color: black;
-    border-radius: .5em;
+    background-color: #44344f;
+    border-radius: 1.5rem;
     opacity: .9;
-    color: purple;
-    border: .1em solid purple;
+    color: #d3fcd5;
+    border: .1em solid #d3fcd5;
     font-family: monospace;
     font-size: large;
 }
+
 .seccionEnlace:hover{
-    border-color: black;
-    background-color: purple;
-    color: black;
+    color: #98a6d4;
 }
+
 .imgBandera {
     opacity: .2;
-    margin: .5em .6em;
+    margin: .5rem;
 }
+
 img {
-    height: 2.8em;
-    width: 3.8em
+    height: 3%;
+    width: 3.75rem;
 }
