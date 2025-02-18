@@ -9,15 +9,15 @@ const Paginado = ({ totalResults, totalPages, currentPage, changePage }) => {
                 <span>
                     <div className="d-flex justify-content-center align-items-center">
                         <button
-                            className="btn btn-transparent btn-pagination"
+                            className="btn btn-pagination"
                             onClick={() => changePage(1)}
                             disabled={currentPage === 1}
                         >
                             <i className="fa fa-fast-backward" aria-hidden="true"></i>
                         </button>
                         <button
-                            className="btn btn-transparent btn-pagination"
-                            onClick={() => changePage(currentPage - 1)}
+                            className="btn btn-pagination"
+                            onClick={() => changePage(+currentPage - 1)}
                             disabled={currentPage === 1}
                         >
                             <i className="fa fa-step-backward" aria-hidden="true"></i>
@@ -26,22 +26,23 @@ const Paginado = ({ totalResults, totalPages, currentPage, changePage }) => {
                             type="number"
                             value={currentPage}
                             name="page"
+                            onClick={(e) => e.target.select()}
                             onChange={(e) =>
-                                changePage(e.target.value, totalPages)
+                                changePage(+e.target.value, totalPages)
                             }
                             min="1"
                             max={totalPages}
-                            className="inputClass botones otroBoton text-dark p-0 btn"
+                            className="input-pagination p-0 btn"
                         />
                         <button
-                            className="btn btn-transparent btn-pagination"
-                            onClick={() => changePage(currentPage + 1)}
+                            className="btn btn-pagination"
+                            onClick={() => changePage(+currentPage + 1)}
                             disabled={currentPage === totalPages}
                         >
                             <i className="fa fa-step-forward" aria-hidden="true"></i>
                         </button>
                         <button
-                            className="btn btn-transparent btn-pagination"
+                            className="btn btn-pagination"
                             onClick={() => changePage(totalPages)}
                             disabled={currentPage === totalPages}
                         >

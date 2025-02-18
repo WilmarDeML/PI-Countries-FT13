@@ -1,9 +1,10 @@
 import { DataTypes } from 'sequelize';
+
 // Exportamos una funcion que define el modelo
 // Luego le injectamos la conexion a sequelize.
 export default sequelize => {
   // defino el modelo
-  sequelize.define('activity', {
+  sequelize.define('Activity', {
     nombre: {
       type: DataTypes.TEXT,
       allowNull: false

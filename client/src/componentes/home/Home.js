@@ -16,7 +16,7 @@ const Home = () => {
         <div className='contenedor'>
             <section className='seccionBanderas'>
                 {
-                    paises &&                   
+                    paises && paises.length &&                   
                         paises.map( (pais, indice) => (		
                             indice <= paises.length && <figure key={pais.id} value={pais.id} className='imgBandera' >                                   
                                 <img src={pais.bandera} alt='ups...' />                            

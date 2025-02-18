@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 // Luego le injectamos la conexion a sequelize.
 export default sequelize => {
   // defino el modelo
-  sequelize.define('country', {
+  sequelize.define('Country', {
     id: {
       type: DataTypes.TEXT,
       allowNull: false,

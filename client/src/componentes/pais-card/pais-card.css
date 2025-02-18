@@ -1,11 +1,14 @@
 .card {
     min-width: 15rem;
 }
+
 .bg-tertiary {
     background-color: rgb(200, 200, 200);
 }
 
-.text-muted {
+.card-footer {
+    font-size: 80%;
     display: flex;
     justify-content: space-between;
+    color: #44344f;
 }
