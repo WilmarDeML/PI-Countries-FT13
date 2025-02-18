@@ -15,7 +15,8 @@ const PaisCard = ({ id, nombre, bandera, continente, poblacion }) => {
                 <h5 className="card-title">{nombre}</h5>
             </div>
             <div className="card-footer">
-                <small className="text-muted"><span>people: {poblacion}</span><span >{continente}</span></small>
+                <span>people: {poblacion}</span>
+                <span >{continente}</span>
             </div>
         </Link>
     );

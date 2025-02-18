@@ -9,11 +9,6 @@ const Header = () => {
             data-bs-theme="dark"
         >
             <div className="container-fluid mx-0">
-                <Link to={`/countries`} className="link card navbar-brand px-2">
-                    <span className="me-2">
-                        <em>Encuentra información de los paises en el mundo</em>
-                    </span>
-                </Link>
                 <button
                     className="navbar-toggler"
                     type="button"

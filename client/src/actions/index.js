@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { getCountries, getDetailCountry, createActivity, loadingTrue } from '../reducers'
+import { API_URL } from '../config.js'
 
 export const obtenerPaises = params => {
 
-    const urlApiPaises = 'http://localhost:8081/countries'
+    const urlApiPaises = `${API_URL}/countries`
 
     return ( 
         async dispatch => {
@@ -26,7 +27,7 @@ export const obtenerPaises = params => {
 export const obtenerTodos = () => (
     async dispatch => {
         await dispatch(loadingTrue())
-        const {data: paises} = await axios.get(`http://localhost:8081/countries/todo`)
+        const {data: paises} = await axios.get(`${API_URL}/countries/todo`)
         await dispatch(getCountries(paises))
     }
 )
@@ -34,7 +35,7 @@ export const obtenerTodos = () => (
 export const detallePais = idPais => (
     async dispatch =>{
         await dispatch(loadingTrue())
-        const { data: detalle } = await axios.get(`http://localhost:8081/countries/${idPais}`)
+        const { data: detalle } = await axios.get(`${API_URL}/countries/${idPais}`)
         await dispatch(getDetailCountry(detalle))
     }
 )
@@ -42,7 +43,7 @@ export const detallePais = idPais => (
 export const postearActividad = datosActividad => (
     async dispatch => {        
         await dispatch({type: 'CARGANDO'})        
-        const {data: actividadCreada} = await axios.post('http://localhost:8081/activity', datosActividad)
+        const {data: actividadCreada} = await axios.post(`${API_URL}/activity`, datosActividad)
         await dispatch(createActivity(actividadCreada))
     }
 )

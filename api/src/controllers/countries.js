@@ -2,7 +2,7 @@ import connection from '../db.js'
 import { Op } from "sequelize"
 import { LIMIT } from '../config.js';
 
-const { country: Country, activity: Activity, actividad_pais: ActivityCountry } = connection.models
+const { Country, Activity } = connection.models
 
 export const obtenerPorPagina = async (req, res) => {
 
@@ -21,11 +21,11 @@ export const obtenerPorPagina = async (req, res) => {
         const countries = await Country.findAndCountAll(query)
 
         return countries.rows.length
-            ? res.json({...countries, totalPages: Math.ceil(countries.count/limit)})
+            ? res.json({countries: countries.rows, totalCountries: countries.count, totalPages: Math.ceil(countries.count / limit)})
             : res.status(404).json({ message: 'No se encontraron resultados con los parámetros brindados' })
     } catch (error) {
         console.error('Error al obtener paises por página: ', error)
-        return res.json({ msg: `Error al obtener paises por página: ${error.message}` });
+        return resstatus(500).json({ msg: `Error al obtener paises por página: ${error.message}` });
     }
 };
 

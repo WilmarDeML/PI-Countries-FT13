@@ -7,47 +7,32 @@ input[type=number]::-webkit-outer-spin-button {
 .seccionPaises {
     font-family: 'Titillium Web', sans-serif;
     font-size: medium;
-    font-weight: 600;
+    font-weight: 400;
     margin: 2rem 5rem;
     opacity: .9;
     border-radius: 1em;
-    background-color: #aaa;
+    background-color: #44344f;
+    color: #d3fcd5;
     padding: 0 2em;
 }
 
 .botones {
+    color: #c2f970;
     text-decoration: none;
     padding: .3em 1em;
-    background-color: rgb(232, 20, 232);
-    border-radius: .5em;
+    background-color: #564d80;
+    border-radius: 1rem;
     opacity: .8;
-    color: rgb(18, 18, 17);
-    border: .1em solid rgb(232, 20, 232);
+    border: .1em solid #564d80;
     font-family: monospace;
-    font-size: x-large;
-    align-self: center;
-    font-weight: bold;
+    font-size: large;
+    align-self: flex-start;
 }
 
 .botones:hover {
-    border-color: rgb(213, 240, 104);
-    background-color: rgb(232, 20, 232);
-    color: rgb(213, 240, 104);
-}
-
-.botonBuscar {
-    font-size: xx-large;
-    cursor: pointer;
-    font-style: oblique;
-    font-weight: 600;
-}
-
-.otroBoton {
-    font-size: large;
-    border-color: rgb(213, 240, 104);
-    background-color: rgb(232, 20, 232);
-    color: rgb(213, 240, 104);
-    text-align: center;
+    border-color: #d3fcd5;
+    background-color: #98a6d4;
+    color: #44344f;
 }
 
 .tFiltros {
@@ -76,17 +61,31 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: .8em;
     padding: 0;
     margin: .5em;
-    color: black;
 }
 
 .liPais:hover {
-    border: .2em solid rgb(232, 20, 232);
+    border: .2em solid #c2f970;
     border-radius: .8em;
 }
 
 .link {
     text-decoration: wavy;
-    color: black;
+    color: #44344f;
+
+}
+
+.link:hover {
+    background: #44344f;
+    color: #c2f970;
+
+    .bg-body-tertiary {
+        background-color: #564d80 !important;        
+    }
+
+    .card-footer {
+        color: #c2f970;
+        background-color: #564d80;
+    }
 }
 
 .filtros {
@@ -141,11 +140,18 @@ legend {
 }
 
 .btn-pagination {
+    color: #c2f970;
     background: transparent !important;
     border: none;
     &:hover {
-        color: rgb(232, 20, 232);
+        color: #98a6d4;
     }
+}
+
+.input-pagination {
+    background-color: #564d80;
+    color: #d3fcd5;
+    border-radius: 1rem;
 }
 
 .openIt {

@@ -6,14 +6,12 @@ import DetallePais from './componentes/detallePais/DetallePais'
 import CreaActividad from './componentes/actividadCultural/CreaActividad'
 
 const App = () => (  
-  <div className="App">
-    <Routes>
+    <Routes className='App'>
       <Route exact path='' element={ <Home /> } />
       <Route exact path='countries' element={ <Paises /> } />
       <Route exact path='actividad' element={ <CreaActividad /> } />
       <Route exact path='countries/:id' element={ <DetallePais /> } />
     </Routes>
-  </div>
 )
 
 export default App

@@ -19,7 +19,7 @@ const Paises = () => {
     }
     
     const handleInputChange = e => {
-        params.page = 1
+        params.page = params.page ?? 1
         setInput({
             ...params,
             [e.target.name]: e.target.value
@@ -33,10 +33,10 @@ const Paises = () => {
     const handleInputPage = (number, limit) => {
 
         if (limit) {
-            number = number < 0 ? 1 : number > limit ? limit : number
+            number = !number || number < 0 ? 1 : number > limit ? limit : number
         }
 
-        if (number) {            
+        if (number !== params.page) {
             setInput({
                 ...params,
                 page: number
@@ -51,7 +51,7 @@ const Paises = () => {
                 <Link to='/actividad' className='botones mx-2'>
                     Crear Actividad Cultural
                 </Link>
-                <Header></Header>
+                <Header/>
                 <button onClick={handleShowFilters} className= 'botones mx-2'>{ showFilters ? 'Ocultar filtros' : 'Mostrar filtros' }</button>
             </div>
             <aside className={`${showFilters ? 'openIt' : 'closeIt'} filtros`}>
@@ -123,9 +123,9 @@ const Paises = () => {
             </aside>
             
             <aside> 
-                { paises?.count > 0 && 
+                { paises?.countries?.length > 0 && 
                     <Paginado 
-                        totalResults={paises.count} 
+                        totalResults={paises.totalCountries} 
                         totalPages={paises.totalPages} 
                         currentPage={params.page} 
                         changePage={handleInputPage}
@@ -134,26 +134,19 @@ const Paises = () => {
 
                 <ul className='d-flex justify-content-between align-items-center'>
                     {
-                        paises?.count > 0 ?                            
+                        paises?.totalCountries > 0 ?                            
                             cargando ? <h1 >Cargando Paises...</h1> :                    
-                            paises.rows.map( pais => (
-                                pais.countryId 
-                                    ?
-                                        <li key={pais.countryId} className='liPais'> 
-                                            <Link to={`/countries/${pais.countryId}`} className='link'>
-                                                <h1>{pais.countryId}</h1>                            
-                                            </Link>
-                                        </li>
-                                    :
-                                        <li key={pais.id} className='card-deck liPais openIt'>
-                                            <PaisCard 
-                                                id={pais.id} 
-                                                nombre={pais.nombre} 
-                                                bandera={pais.bandera} 
-                                                continente={pais.continente}
-                                                poblacion={pais.poblacion} 
-                                            />
-                                        </li>        
+                            paises.countries.map( pais => (
+                                <li key={pais.id} className='card-deck liPais openIt'>
+                                    <PaisCard 
+                                        id={pais.id} 
+                                        nombre={pais.nombre} 
+                                        bandera={pais.bandera} 
+                                        continente={pais.continente}
+                                        poblacion={pais.poblacion}
+                                        className='link'
+                                    />
+                                </li>        
                             ))        
                         :
                             <h1 className='alert alert-warning mt-5 w-100 openIt'> 
